@@ -31,6 +31,7 @@
             const pass = encoder.beginRenderPass({
                 colorAttachments: [{
                 view: context.getCurrentTexture().createView(),
+                clearValue: { r: 1, g: 0.1, b: 0.1, a: 1 },
                 loadOp: "clear",
                 storeOp: "store",
             }]
