@@ -96,7 +96,7 @@ const uniform_data = new Float32Array([canvas.width, canvas.height]);
 //     size: uniform_data.byteLength,
 //     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
 // });
-device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
+//device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
 
 device.queue.writeBuffer(instance_buffer, 0, particle_data);
 
