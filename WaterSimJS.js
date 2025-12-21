@@ -102,46 +102,41 @@ device.queue.writeBuffer(instance_buffer, 0, particle_data);
 
 const vertex_shader_code = `
 struct VertexOutput {
-    @builtin(position) position : vec4<f32>, // GPU position in NDC
-    @location(0) center : vec2<f32>,         // particle center in NDC
-    @location(1) radius : f32,               // particle radius in NDC
+    @builtin(position) position : vec4<f32>,
+    @location(0) localPos : vec2<f32>, // quad-local position
 };
 
 struct CanvasSize {
-    width: f32,
-    height: f32,
+    width : f32,
+    height : f32,
 };
-@group(0) @binding(0) var<uniform> canvasSize: CanvasSize;
+
+@group(0) @binding(0)
+var<uniform> canvas : CanvasSize;
 
 @vertex
 fn vs_main(
-    @location(0) quadPos : vec2<f32>,       // vertex of quad
-    @location(1) instancePos : vec2<f32>,   // particle x,y in pixels
-    @location(2) instanceRadius : f32       // particle radius in pixels
+    @location(0) quadPos : vec2<f32>,
+    @location(1) instancePos : vec2<f32>,   // pixels
+    @location(2) radius : f32               // pixels
 ) -> VertexOutput {
+
+    let ndcX = (instancePos.x / canvas.width) * 2.0 - 1.0;
+    let ndcY = 1.0 - (instancePos.y / canvas.height) * 2.0;
+
+    let rX = (radius / canvas.width) * 2.0;
+    let rY = (radius / canvas.height) * 2.0;
+
     var out : VertexOutput;
-
-    let inv_cw = 2.0 / canvasSize.width;
-    let inv_ch = 2.0 / canvasSize.height;
-
-    // Convert particle position from pixels to NDC (-1 to 1)
-    let ndcX = instancePos.x * inv_cw;
-    let ndcY = instancePos.y * inv_ch;
-
-    // Convert radius from pixels to NDC
-    let ndcRadiusX = instanceRadius * inv_cw;
-    let ndcRadiusY = instanceRadius * inv_ch;
-
-    // Position of vertex = center + quad vertex scaled by radius
     out.position = vec4<f32>(
-        ndcX + quadPos.x * ndcRadiusX,
-        ndcY + quadPos.y * ndcRadiusY,
+        ndcX + quadPos.x * rX,
+        ndcY + quadPos.y * rY,
         0.0,
         1.0
     );
 
-    out.center = vec2<f32>(ndcX, ndcY);
-    out.radius = (ndcRadiusX + ndcRadiusY) * 0.5; // approximate circle radius
+    // Pass quad-local coordinates directly
+    out.localPos = quadPos;
 
     return out;
 }
@@ -149,11 +144,17 @@ fn vs_main(
 
 const fragment_shader_code = `
 @fragment
-fn fs_main(@builtin(position) fragPos: vec4<f32>,
-           @location(0) center: vec2<f32>,
-           @location(1) radius: f32) -> @location(0) vec4<f32> {
-    let dist = distance(fragPos.xy, center);
-    if (dist > radius) { discard; }
+fn fs_main(
+    @location(0) localPos : vec2<f32>
+) -> @location(0) vec4<f32> {
+
+    // localPos ranges from -0.5 to 0.5
+    let dist = length(localPos);
+
+    if (dist > 0.5) {
+        discard;
+    }
+
     return vec4<f32>(1.0, 0.5, 0.0, 1.0);
 }
 `
