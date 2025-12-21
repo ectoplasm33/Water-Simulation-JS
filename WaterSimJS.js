@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const particle_radius = 15.0 / canvas.width;
+const particle_radius = 3.0 / canvas.width;
 
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
@@ -91,13 +91,13 @@ for (let i = 0; i < max_particles; i++) {
     }
 }
 
-const ratio = canvas.height / canvas.width;
+const ratio = canvas.width / canvas.height;
 
 const quad_vertices = new Float32Array([
-  -0.6 * ratio, -0.6,
-   0.6 * ratio, -0.6,
-  -0.6 * ratio,  0.6,
-   0.6 * ratio,  0.6,
+  -1, -ratio,
+   1, -ratio,
+  -1,  ratio,
+   1,  ratio,
 ]);
 
 if (!navigator.gpu) {
@@ -292,8 +292,8 @@ const inv_ch = 2.0 / canvas.height;
 
 canvas.addEventListener("mousemove", e => {
     const rect = canvas.getBoundingClientRect();
-    mouse_x = e.clientX - rect.left;
-    mouse_y = e.clientY - rect.top;
+    mouse_x = e.clientX - rect.left - canvas_x;
+    mouse_y = e.clientY - rect.top - canvas_y;
 });
 
 canvas.addEventListener("mousedown", e => {
@@ -327,18 +327,16 @@ async function main_loop() {
     }
 
     for (let i = 0; i < num_particles; i++) {
-        //const k = particle_keys[i];
-        const j = i*num_vars;
-        const cx = Math.floor(particle_data[j+4] * inv_cs);
-        const cy = Math.floor(particle_data[j+5] * inv_cs);
+        const k = particle_keys[i];
 
         let num = 0;
-
+        
+        let brk = false;
         for (let dy = -1; dy < 2; dy++) {
-            //const row_key = dy * grid_hash;
+            const row_key = dy * grid_hash;
 
             for (let dx = -1; dx < 2; dx++) {
-                const key = cx + dx + (cy + dy) * grid_hash;//k + dx + row_key;
+                const key = k + dx + row_key;
 
                 const cell = grid.get(key);
 
@@ -349,8 +347,13 @@ async function main_loop() {
 
                     particle_neighbors[i][num] = cell[j];
                     num++;
+
+                    if (num == max_neighbors) brk = true; break;
                 }   
-            }    
+
+                if (brk) break;
+            }  
+            if (brk) break;  
         }
 
         const count = num;
@@ -379,9 +382,9 @@ async function main_loop() {
                 let q2 = q*q;
                 let q3 = q2*q;
 
-                //neighbor_info[i][num][3] = q;
+                neighbor_info[i][num][3] = q;
                 neighbor_info[i][num][4] = q2;
-                //neighbor_info[i][num][5] = q3;
+                neighbor_info[i][num][5] = q3;
 
                 density += q3;
 
