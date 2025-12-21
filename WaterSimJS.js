@@ -300,7 +300,7 @@ async function main_loop() {
             grid.set(key, []);
         }
 
-        grid[key].push(i);
+        grid.get(key).push(i);
 
         particle_keys[i] = key;
     }
