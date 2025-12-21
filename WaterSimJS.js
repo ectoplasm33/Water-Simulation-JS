@@ -310,7 +310,7 @@ async function main_loop() {
 
     grid.clear();
     for (let i = 0; i < num_particles; i++) {
-        let j = i*num_vars;
+        const j = i*num_vars;
         
         const cx = Math.floor(particle_data[j+4] * inv_cs);
         const cy = Math.floor(particle_data[j+5] * inv_cs);
@@ -328,6 +328,7 @@ async function main_loop() {
 
     for (let i = 0; i < num_particles; i++) {
         //const k = particle_keys[i];
+        const j = i*num_vars;
         const cx = Math.floor(particle_data[j+4] * inv_cs);
         const cy = Math.floor(particle_data[j+5] * inv_cs);
 
