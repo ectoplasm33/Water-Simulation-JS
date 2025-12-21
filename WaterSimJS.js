@@ -91,7 +91,7 @@ new Float32Array(quad_buffer.getMappedRange()).set(quad_vertices);
 quad_buffer.unmap();
 
 const instance_buffer = device.createBuffer({
-    size: particle_x.byteLength * 4,
+    size: particle_data.byteLength,
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
 });
 
