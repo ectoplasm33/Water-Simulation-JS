@@ -208,7 +208,7 @@ fn vs_main(
 const fragment_shader_code = `
 @fragment
 fn fs_main(
-    @builtin(position) : vec4<f32>,
+    @builtin(position) position : vec4<f32>,
     @location(0) center : vec2<f32>,
     @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
