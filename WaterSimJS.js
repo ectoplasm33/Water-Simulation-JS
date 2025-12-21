@@ -30,8 +30,8 @@ let mouse_strength = 0.5;
 let mouse_influence_r = 250.0;
 let mouse_r2 = mouse_influence_r * mouse_influence_r;
 
-let l_button = false;
-let r_button = false;
+let lmb = false;
+let rmb = false;
 
 let mouse_x;
 let mouse_y;
@@ -288,6 +288,22 @@ const pipeline = device.createRenderPipeline({
 const inv_cw = 2.0 / canvas.width;
 const inv_ch = 2.0 / canvas.height;
 
+canvas.addEventListener("mousemove", e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse_x = e.clientX - rect.left;
+    mouse_y = e.clientY - rect.top;
+});
+
+canvas.addEventListener("mousedown", e => {
+    if (e.button == 0) lmb = true;
+    if (e.button == 2) rmb = true;
+});
+
+canvas.addEventListener("mouseup", e => {
+    if (e.button == 0) lmb = false;
+    if (e.button == 2) rmb = false;
+});
+
 async function main_loop() {
 
     grid.clear();
@@ -536,7 +552,24 @@ async function main_loop() {
         new_particles[p+4] = x + vx;
         new_particles[p+5] = y + vy;
 
-        // add mouse interaction
+        if (!show_ui) {
+            const dx = mouse_x - new_particles[p];
+            const dy = mouse_y - new_particles[p+1];
+            const dist = dx*dx + dy*dy;
+
+            if (dist < mouse_r2 && dist > 0) {
+                const influence = mouse_strength / Math.sqrt(dist);
+
+                if (lmb) {
+                    new_particles[p] -= dx * influence;
+                    new_particles[p+1] -= dy * influence;
+                } 
+                if (rmb) {
+                    new_particles[p] += dx * influence;
+                    new_particles[p+1] += dy * influence;
+                }
+            }
+        }
     }
 
     const count = num_particles*num_vars;
