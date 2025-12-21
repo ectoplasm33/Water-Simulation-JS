@@ -316,11 +316,13 @@ async function main_loop() {
             for (let dx = -1; dx < 2; dx++) {
                 const key = k + dx + row_key;
 
-                const cell = grid.get(key)
+                const cell = grid.get(key);
+
+                if (!cell) continue;
 
                 let j = 0;
                 for (j; j < cell.length; j++) {
-                    particle_neighbors[i][j] = cell[j]
+                    particle_neighbors[i][j] = cell[j];
                 }
 
                 particle_neighbor_count[i] = j;
