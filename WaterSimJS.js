@@ -1,10 +1,6 @@
 const canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-
-let canvas_x = canvas.width;
-let canvas_y = canvas.height;
-
 const particle_radius = 3;
 
 let num_particles = 1000;
@@ -48,8 +44,8 @@ const particle_data = new Float32Array(max_particles * num_vars);
 
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
-    particle_data[j] = (Math.random()-0.5) * canvas_x;
-    particle_data[j+1] = (Math.random()-0.5) * canvas_y;
+    particle_data[j] = (Math.random()-0.5) * canvas.width;
+    particle_data[j+1] = (Math.random()-0.5) * canvas.height;
     particle_data[j+2] = 0;
     particle_data[j+3] = 0;
 }
@@ -117,7 +113,7 @@ const bindGroup = device.createBindGroup({
     entries: [
         {
             binding: 0,
-            resource: { buffer: uniformBuffer }
+            resource: { buffer: uniform_buffer }
         }
     ]
 });
