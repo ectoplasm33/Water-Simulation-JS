@@ -13,7 +13,7 @@ let target_density  = 4.3;
 let pressure_multiplier = 0.3;
 let viscosity_multipler = 0.13;
 let surface_tension_mp = 1.2;
-let gravity = 0.3;
+let gravity = -0.3;
 
 let h_sq = influence_radius * influence_radius;
 let repulsion_radius = 0.5 * influence_radius;
@@ -53,6 +53,7 @@ const normalized_particles = new Float32Array(max_particles * render_vars)
 
 const max_neighbors = 150;
 const particle_neighbors = new Array(max_particles);
+const neighbors_in_radius = new Array(max_particles);
 const particle_neighbor_count = new Int16Array(max_neighbors);
 
 const neighbor_info = new Array(max_particles);
@@ -79,7 +80,8 @@ for (let i = 0; i < num_particles; i++) {
 }
 
 for (let i = 0; i < max_particles; i++) {
-    particle_neighbors[i] = new Int16Array(max_neighbors);
+    particle_neighbors[i] = new Int32Array(max_neighbors);
+    neighbors_in_radius[i] = new Int32Array(max_neighbors);
     neighbor_info[i] = new Array(max_neighbors);
     calculated_values[i] = new Float32Array(4)
     particle_neighbor_count[i] = 0;
@@ -307,9 +309,9 @@ async function main_loop() {
     }
 
     for (let i = 0; i < num_particles; i++) {
-        particle_neighbor_count[i] = 0;
-
         let k = particle_keys[i];
+
+        let num = 0;
 
         for (let dy = -1; dy < 2; dy++) {
             let row_key = dy * grid_hash;
@@ -323,14 +325,15 @@ async function main_loop() {
 
                 let j = 0;
                 for (j; j < cell.length; j++) {
-                    particle_neighbors[i][j] = cell[j];
-                }
-
-                particle_neighbor_count[i] = j;
-            }
+                    particle_neighbors[i][num] = cell[j];
+                    num++;
+                }   
+            }    
         }
 
-        const count = particle_neighbor_count[i];
+        const count = num;
+
+        num = 0;
         
         let density = 0.0;
 
@@ -339,29 +342,34 @@ async function main_loop() {
         for (let j = 0; j < count; j++) {
             const n = particle_neighbors[i][j]*num_vars;
             
-            let dx = particle_data[n] - particle_data[p+4];
-            let dy = particle_data[n+1] - particle_data[p+5];
+            let dx = particle_data[n+4] - particle_data[p+4];
+            let dy = particle_data[n+5] - particle_data[p+5];
             let dist = dx*dx + dy*dy;
 
             if (dist < h_sq) {
-                neighbor_info[i][j][0] = dx;
-                neighbor_info[i][j][1] = dy;
+                neighbors_in_radius[i][num] = particle_neighbors[i][j];
+                neighbor_info[i][num][0] = dx;
+                neighbor_info[i][num][1] = dy;
                 dist = Math.sqrt(dist);
-                neighbor_info[i][j][2] = dist;
+                neighbor_info[i][num][2] = dist;
 
                 let q = (influence_radius - dist) * inv_h;
                 let q2 = q*q;
                 let q3 = q2*q;
 
-                neighbor_info[i][j][3] = q;
-                neighbor_info[i][j][4] = q2;
-                neighbor_info[i][j][5] = q3;
+                neighbor_info[i][num][3] = q;
+                neighbor_info[i][num][4] = q2;
+                neighbor_info[i][num][5] = q3;
 
                 density += q3;
+
+                num++;
             }
         }
 
         particle_data[p+6] = Math.max(density, 1e-6);
+
+        particle_neighbor_count[i] = num;
     }
 
     for (let i = 0; i < num_particles; i++) {
@@ -378,7 +386,7 @@ async function main_loop() {
         const count = particle_neighbor_count[i];
 
         for (let j = 0; j < count; j++) {
-            const n = particle_neighbors[i][j]*num_vars;
+            const n = neighbors_in_radius[i][j]*num_vars;
 
             const neighbor = neighbor_info[i][j];
 
@@ -456,7 +464,7 @@ async function main_loop() {
             const size = particle_neighbor_count[i];
 
             for (let j = 0; j < size; j++) {
-                const n = particle_neighbors[i][j]
+                const n = neighbors_in_radius[i][j]
                 const neighbor_vals = calculated_values[n];
                 const neighbor = neighbor_info[i][j];
 
@@ -519,13 +527,15 @@ async function main_loop() {
         // add mouse interaction
     }
 
+    const count = num_particles*num_vars;
+
+    for (let i = 0; i < count; i++) {
+        particle_data[i] = new_particles[i];
+    }
+
     for (let i = 0; i < num_particles; i++) {
         let j1 = i*num_vars;
         let j2 = i*render_vars;
-
-        for (let j = 0; j < num_vars; j++) {
-            particle_data[j1+j] = new_particles[j1+j];
-        }
         
         normalized_particles[j2] = particle_data[j1] * inv_cw;
         normalized_particles[j2+1] = particle_data[j1+1] * inv_ch;
