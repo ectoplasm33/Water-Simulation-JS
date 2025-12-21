@@ -251,7 +251,7 @@ async function main_loop() {
     pass.setBindGroup(0, bindGroup);
     pass.setVertexBuffer(0, quad_buffer);
     pass.setVertexBuffer(1, instance_buffer);
-    pass.draw(4, num_particles, 0, 0);
+    pass.draw(4, 1, 0, 0);
 
     pass.end()
 
