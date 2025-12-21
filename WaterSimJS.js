@@ -91,11 +91,13 @@ for (let i = 0; i < max_particles; i++) {
     }
 }
 
+const ratio = canvas.height / canvas.width;
+
 const quad_vertices = new Float32Array([
-  -0.5, -0.5,
-   0.5, -0.5,
-  -0.5,  0.5,
-   0.5,  0.5,
+  -0.6 * ratio, -0.6,
+   0.6 * ratio, -0.6,
+  -0.6 * ratio,  0.6,
+   0.6 * ratio,  0.6,
 ]);
 
 if (!navigator.gpu) {
@@ -290,8 +292,8 @@ const inv_ch = 2.0 / canvas.height;
 
 canvas.addEventListener("mousemove", e => {
     const rect = canvas.getBoundingClientRect();
-    mouse_x = e.clientX - rect.left + canvas_x;
-    mouse_y = e.clientY - rect.top + canvas_y;
+    mouse_x = e.clientX - rect.left;
+    mouse_y = e.clientY - rect.top;
 });
 
 canvas.addEventListener("mousedown", e => {
@@ -310,8 +312,8 @@ async function main_loop() {
     for (let i = 0; i < num_particles; i++) {
         let j = i*num_vars;
         
-        let cx = Math.floor(particle_data[j+4] * inv_cs);
-        let cy = Math.floor(particle_data[j+5] * inv_cs);
+        const cx = Math.floor(particle_data[j+4] * inv_cs);
+        const cy = Math.floor(particle_data[j+5] * inv_cs);
 
         const key = cy * grid_hash + cx;
 
@@ -325,15 +327,17 @@ async function main_loop() {
     }
 
     for (let i = 0; i < num_particles; i++) {
-        const k = particle_keys[i];
+        //const k = particle_keys[i];
+        const cx = Math.floor(particle_data[j+4] * inv_cs);
+        const cy = Math.floor(particle_data[j+5] * inv_cs);
 
         let num = 0;
 
         for (let dy = -1; dy < 2; dy++) {
-            const row_key = dy * grid_hash;
+            //const row_key = dy * grid_hash;
 
             for (let dx = -1; dx < 2; dx++) {
-                const key = k + dx + row_key;
+                const key = cx + dx + (cy + dy) * grid_hash;//k + dx + row_key;
 
                 const cell = grid.get(key);
 
@@ -499,7 +503,7 @@ async function main_loop() {
 
             k = Math.min(Math.max(k, -inv_rep_r), inv_rep_r);
 
-            let q = surface_tension_mp * k;
+            const q = surface_tension_mp * k;
 
             fx += nx * q;
             fy += ny * q;
@@ -516,7 +520,7 @@ async function main_loop() {
             vx *= m1;
             vy *= m1;
         }
-
+        
         if (render_colors) {
             const m = Math.sqrt(m2);
             const m3 = m2 * m;
