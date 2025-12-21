@@ -54,7 +54,7 @@ const normalized_particles = new Float32Array(max_particles * render_vars)
 const max_neighbors = 150;
 const particle_neighbors = new Array(max_particles);
 const neighbors_in_radius = new Array(max_particles);
-const particle_neighbor_count = new Int16Array(max_neighbors);
+const particle_neighbor_count = new Int16Array(max_particles);
 
 const neighbor_info = new Array(max_particles);
 
