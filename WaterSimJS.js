@@ -316,7 +316,7 @@ async function main_loop() {
             for (let dx = -1; dx < 2; dx++) {
                 const key = k + dx + row_key;
 
-                const cell = grid[key]
+                const cell = grid.get(key)
 
                 let j = 0;
                 for (j; j < cell.length; j++) {
