@@ -94,33 +94,62 @@ const instance_buffer = device.createBuffer({
 });
 
 const uniform_data = new Float32Array([canvas.width, canvas.height]);
+
 // const uniform_buffer = device.createBuffer({
 //     size: uniform_data.byteLength,
 //     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
 // });
 //device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
 
+// const vertex_shader_code = `
+// struct VertexOutput {
+//     @builtin(position) position : vec4<f32>,
+//     @location(0) localPos : vec2<f32>, // quad-local position
+// };
+
+// @vertex
+// fn vs_main(
+//     @location(0) quadPos : vec2<f32>,
+//     @location(1) instancePos : vec2<f32>,   // pixels
+// ) -> VertexOutput {
+//     var out : VertexOutput;
+//     out.position = vec4<f32>(
+//         instancePos.x,
+//         instancePos.y,
+//         0.0,
+//         1.0
+//     );
+
+//     // Pass quad-local coordinates directly
+//     out.localPos = quadPos;
+
+//     return out;
+// }
+// `;
+
 const vertex_shader_code = `
-struct VertexOutput {
+struct vertexOutput {
     @builtin(position) position : vec4<f32>,
-    @location(0) localPos : vec2<f32>, // quad-local position
-};
+    @location(0) localPos : vec2<f32>,
+    @location(1) radius : f32
+}
 
 @vertex
 fn vs_main(
     @location(0) quadPos : vec2<f32>,
-    @location(1) instancePos : vec2<f32>,   // pixels
-) -> VertexOutput {
-    var out : VertexOutput;
+    @location(1) center : vec2<f32>,
+    @location(2) radius : f32
+) -> vertexOutput {
+    var out : vertexOutput;
+
     out.position = vec4<f32>(
-        instancePos.x,
-        instancePos.y,
+        center + quadPos * radius,
         0.0,
         1.0
     );
 
-    // Pass quad-local coordinates directly
     out.localPos = quadPos;
+    out.radius = radius;
 
     return out;
 }
@@ -142,19 +171,19 @@ fn vs_main(
 const fragment_shader_code = `
 @fragment
 fn fs_main(
-    @location(0) localPos : vec2<f32>
+    @location(0) localPos : vec2<f32>,
+    @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
 
-    // localPos ranges from -0.5 to 0.5
-    let dist = length(localPos);
+    // let dist = length(localPos);
 
-    if (dist > 0.5) {
-        discard;
-    }
+    // if (dist > 0.5) {
+    //     discard;
+    // }
 
     return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
 }
-`
+`;
 
 // const fragment_shader_code = `
 // @fragment
