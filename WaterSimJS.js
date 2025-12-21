@@ -294,8 +294,8 @@ async function main_loop() {
     for (let i = 0; i < num_particles; i++) {
         let j = i*num_vars;
         
-        let cx = Math.floor(particle_data[j] * inv_cs);
-        let cy = Math.floor(particle_data[j+1] * inv_cs);
+        let cx = Math.floor(particle_data[j+4] * inv_cs);
+        let cy = Math.floor(particle_data[j+5] * inv_cs);
 
         let key = cy * grid_hash + cx;
 
@@ -323,8 +323,7 @@ async function main_loop() {
 
                 if (!cell) continue;
 
-                let j = 0;
-                for (j; j < cell.length; j++) {
+                for (let j = 0; j < cell.length; j++) {
                     particle_neighbors[i][num] = cell[j];
                     num++;
                 }   
@@ -468,7 +467,13 @@ async function main_loop() {
                 const neighbor_vals = calculated_values[n];
                 const neighbor = neighbor_info[i][j];
 
-                k -= ((neighbor_vals[2] - nx) * neighbor[0] + (neighbor_vals[3] - ny) * neighbor[1]) * neighbor[5] / (neighbor[2] * particle_data[n*num_vars + 6]);
+                let d = neighbor[2] * particle_data[n*num_vars + 6];
+
+                if (d == 0) {
+                    d = 1;
+                }
+
+                k -= ((neighbor_vals[2] - nx) * neighbor[0] + (neighbor_vals[3] - ny) * neighbor[1]) * neighbor[5] / d;
             }
 
             k = Math.min(Math.max(k, -inv_rep_r), inv_rep_r);
@@ -485,7 +490,7 @@ async function main_loop() {
         const m2 = vx*vx + vy*vy;
 
         if (m2 > 1225) {
-            const m1 = 1.0 / Math.sqrt(m2);
+            const m1 = 35.0 / Math.sqrt(m2);
 
             vx *= m1;
             vy *= m1;
