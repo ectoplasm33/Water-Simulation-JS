@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const particle_radius = 3;
+const particle_radius = 3.0 / canvas.width;
 
 let num_particles = 1000;
 let max_particles = 10000;
@@ -50,6 +50,8 @@ for (let i = 0; i < num_particles; i++) {
     particle_data[j+2] = particle_radius;
     particle_data[j+3] = 0;
     particle_data[j+4] = 0;
+
+    normalized_particles[j+2] = particle_radius;
 }
 
 const quad_vertices = new Float32Array([
@@ -127,12 +129,25 @@ const uniform_data = new Float32Array([canvas.width, canvas.height]);
 // }
 // `;
 
+// const vertex_shader_code = `
+// @vertex
+// fn vs_main(@builtin(vertex_index) i : u32) -> @builtin(position) vec4<f32> {
+//     var pos = array<vec2<f32>, 4>(
+//         vec2<f32>(-1.0, -1.0),
+//         vec2<f32>( 1.0, -1.0),
+//         vec2<f32>(-1.0,  1.0),
+//         vec2<f32>( 1.0,  1.0)
+//     );
+//     return vec4<f32>(pos[i], 0.0, 1.0);
+// }
+// `
+
 const vertex_shader_code = `
 struct vertexOutput {
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>,
     @location(1) radius : f32
-}
+};
 
 @vertex
 fn vs_main(
@@ -154,19 +169,6 @@ fn vs_main(
     return out;
 }
 `;
-
-// const vertex_shader_code = `
-// @vertex
-// fn vs_main(@builtin(vertex_index) i : u32) -> @builtin(position) vec4<f32> {
-//     var pos = array<vec2<f32>, 4>(
-//         vec2<f32>(-1.0, -1.0),
-//         vec2<f32>( 1.0, -1.0),
-//         vec2<f32>(-1.0,  1.0),
-//         vec2<f32>( 1.0,  1.0)
-//     );
-//     return vec4<f32>(pos[i], 0.0, 1.0);
-// }
-// `
 
 const fragment_shader_code = `
 @fragment
