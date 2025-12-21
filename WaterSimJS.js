@@ -213,11 +213,11 @@ fn fs_main(
     @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
 
-    let dist = distance(position.xy, center);
+    // let dist = distance(position.xy, center);
 
-    if (dist > 0.5) {
-        discard;
-    }
+    // if (dist > 0.5) {
+    //     discard;
+    // }
 
     return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
 }
