@@ -1,7 +1,7 @@
 const canvas = document.querySelector('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
-const particle_radius = 100.0 / canvas.width;
+const particle_radius = 15.0 / canvas.width;
 
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
@@ -208,15 +208,16 @@ fn vs_main(
 const fragment_shader_code = `
 @fragment
 fn fs_main(
-    @location(0) localPos : vec2<f32>,
+    @builtin(position) : vec4<f32>,
+    @location(0) center : vec2<f32>,
     @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
 
-    // let dist = length(localPos);
+    let dist = distance(position.xy, center);
 
-    // if (dist > 0.5) {
-    //     discard;
-    // }
+    if (dist > 0.5) {
+        discard;
+    }
 
     return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
 }
@@ -521,6 +522,11 @@ async function main_loop() {
     for (let i = 0; i < num_particles; i++) {
         let j1 = i*num_vars;
         let j2 = i*render_vars;
+
+        for (let j = 0; j < num_vars; j++) {
+            particle_data[j1+j] = new_particles[j1+j];
+        }
+        
         normalized_particles[j2] = particle_data[j1] * inv_cw;
         normalized_particles[j2+1] = particle_data[j1+1] * inv_ch;
     }
