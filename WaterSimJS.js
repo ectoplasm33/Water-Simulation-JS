@@ -290,8 +290,8 @@ const inv_ch = 2.0 / canvas.height;
 
 canvas.addEventListener("mousemove", e => {
     const rect = canvas.getBoundingClientRect();
-    mouse_x = e.clientX - rect.left;
-    mouse_y = e.clientY - rect.top;
+    mouse_x = e.clientX - rect.left + canvas_x;
+    mouse_y = e.clientY - rect.top + canvas_y;
 });
 
 canvas.addEventListener("mousedown", e => {
@@ -325,12 +325,12 @@ async function main_loop() {
     }
 
     for (let i = 0; i < num_particles; i++) {
-        let k = particle_keys[i];
+        const k = particle_keys[i];
 
         let num = 0;
 
         for (let dy = -1; dy < 2; dy++) {
-            let row_key = dy * grid_hash;
+            const row_key = dy * grid_hash;
 
             for (let dx = -1; dx < 2; dx++) {
                 const key = k + dx + row_key;
@@ -340,7 +340,7 @@ async function main_loop() {
                 if (!cell) continue;
 
                 for (let j = 0; j < cell.length; j++) {
-                    if (cell[j] == k) continue;
+                    if (cell[j] == i) continue;
 
                     particle_neighbors[i][num] = cell[j];
                     num++;
@@ -359,8 +359,8 @@ async function main_loop() {
         for (let j = 0; j < count; j++) {
             const n = particle_neighbors[i][j]*num_vars;
             
-            let dx = particle_data[n+4] - particle_data[p+4];
-            let dy = particle_data[n+5] - particle_data[p+5];
+            const dx = particle_data[n+4] - particle_data[p+4];
+            const dy = particle_data[n+5] - particle_data[p+5];
             let dist = dx*dx + dy*dy;
 
             if (dist < h_sq) {
