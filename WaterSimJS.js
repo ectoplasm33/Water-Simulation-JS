@@ -92,10 +92,10 @@ const instance_buffer = device.createBuffer({
 });
 
 const uniform_data = new Float32Array([canvas.width, canvas.height]);
-const uniform_buffer = device.createBuffer({
-    size: uniform_data.byteLength,
-    usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-});
+// const uniform_buffer = device.createBuffer({
+//     size: uniform_data.byteLength,
+//     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
+// });
 device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
 
 device.queue.writeBuffer(instance_buffer, 0, particle_data);
@@ -110,9 +110,6 @@ device.queue.writeBuffer(instance_buffer, 0, particle_data);
 //     width : f32,
 //     height : f32,
 // };
-
-// @group(0) @binding(0)
-// var<uniform> canvas : CanvasSize;
 
 // @vertex
 // fn vs_main(
@@ -223,15 +220,15 @@ const pipeline = device.createRenderPipeline({
 });
 
 
-const bindGroup = device.createBindGroup({
-    layout: pipeline.getBindGroupLayout(0),
-    entries: [
-        {
-            binding: 0,
-            resource: { buffer: uniform_buffer }
-        }
-    ]
-});
+// const bindGroup = device.createBindGroup({
+//     layout: pipeline.getBindGroupLayout(0),
+//     entries: [
+//         {
+//             binding: 0,
+//             resource: { buffer: uniform_buffer }
+//         }
+//     ]
+// });
 
 // main loop
 async function main_loop() {
@@ -248,7 +245,7 @@ async function main_loop() {
     });
 
     pass.setPipeline(pipeline);
-    pass.setBindGroup(0, bindGroup);
+    // pass.setBindGroup(0, bindGroup);
     pass.setVertexBuffer(0, quad_buffer);
     pass.setVertexBuffer(1, instance_buffer);
     pass.draw(4, 1, 0, 0);
