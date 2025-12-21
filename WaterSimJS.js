@@ -38,16 +38,18 @@ let show_fps = false;
 
 let active = true;
 
-const num_vars = 4;
+const num_vars = 5;
 
 const particle_data = new Float32Array(max_particles * num_vars);
+const normalized_particles = new Float32Array(max_particles * num_vars)
 
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
     particle_data[j] = (Math.random()-0.5) * canvas.width;
     particle_data[j+1] = (Math.random()-0.5) * canvas.height;
-    particle_data[j+2] = 0;
+    particle_data[j+2] = particle_radius;
     particle_data[j+3] = 0;
+    particle_data[j+4] = 0;
 }
 
 const quad_vertices = new Float32Array([
@@ -98,39 +100,21 @@ const uniform_data = new Float32Array([canvas.width, canvas.height]);
 // });
 //device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
 
-device.queue.writeBuffer(instance_buffer, 0, particle_data);
-
 const vertex_shader_code = `
 struct VertexOutput {
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>, // quad-local position
 };
 
-struct CanvasSize {
-    width : f32,
-    height : f32,
-};
-
 @vertex
 fn vs_main(
     @location(0) quadPos : vec2<f32>,
     @location(1) instancePos : vec2<f32>,   // pixels
-    @location(2) radius : f32               // pixels
 ) -> VertexOutput {
-
-    let inv_cw = 2.0 / canvas.width;
-    let inv_ch = 2.0 / canvas.height;
-
-    let ndcX = instancePos.x * inv_cw - 1.0;
-    let ndcY = 1.0 - instancePos.y * inv_ch;
-
-    let rX = radius * inv_cw;
-    let rY = radius * inv_ch;
-
     var out : VertexOutput;
     out.position = vec4<f32>(
-        ndcX + quadPos.x * rX,
-        ndcY + quadPos.y * rY,
+        instancePos.x,
+        instancePos.y,
         0.0,
         1.0
     );
@@ -199,7 +183,7 @@ const pipeline = device.createRenderPipeline({
                 ]
             },
             { // instance buffer
-                arrayStride: 3 * 4,
+                arrayStride: num_vars * 4,
                 stepMode: 'instance',
                 attributes: [
                     { shaderLocation: 1, offset: 0, format: 'float32x2' }, // x,y
@@ -231,7 +215,19 @@ const pipeline = device.createRenderPipeline({
 // });
 
 // main loop
+
+const inv_cw = 1.0 / canvas.width;
+const inv_ch = 1.0 / canvas.height;
+
 async function main_loop() {
+
+    for (let i = 0; i < num_particles; i++) {
+        let j = i*num_vars;
+        normalized_particles[j] = particle_data[j] * inv_cw * 2.0;
+        normalized_particles[j+1] = particle_data[j+1] * inv_ch * 2.0;
+    }
+
+    device.queue.writeBuffer(instance_buffer, 0, normalized_particles);
 
     const encoder = device.createCommandEncoder();
 
@@ -248,7 +244,7 @@ async function main_loop() {
     // pass.setBindGroup(0, bindGroup);
     pass.setVertexBuffer(0, quad_buffer);
     pass.setVertexBuffer(1, instance_buffer);
-    pass.draw(4, 1, 0, 0);
+    pass.draw(4, num_particles, 0, 0);
 
     pass.end()
 
