@@ -98,26 +98,6 @@ const uniform_buffer = device.createBuffer({
 });
 device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
 
-const bindGroupLayout = device.createBindGroupLayout({
-    entries: [
-        {
-            binding: 0,
-            visibility: GPUShaderStage.VERTEX,
-            buffer: { type: "uniform" }
-        }
-    ]
-});
-
-const bindGroup = device.createBindGroup({
-    layout: bindGroupLayout,
-    entries: [
-        {
-            binding: 0,
-            resource: { buffer: uniform_buffer }
-        }
-    ]
-});
-
 device.queue.writeBuffer(instance_buffer, 0, particle_data);
 
 const vertex_shader_code = `
@@ -216,6 +196,17 @@ const pipeline = device.createRenderPipeline({
         topology: 'triangle-strip'
     },
     layout: 'auto'
+});
+
+
+const bindGroup = device.createBindGroup({
+    layout: pipeline.getBindGroupLayout(0),
+    entries: [
+        {
+            binding: 0,
+            resource: { buffer: uniform_buffer }
+        }
+    ]
 });
 
 // main loop
