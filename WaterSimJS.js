@@ -100,84 +100,84 @@ const uniform_data = new Float32Array([canvas.width, canvas.height]);
 
 device.queue.writeBuffer(instance_buffer, 0, particle_data);
 
-// const vertex_shader_code = `
-// struct VertexOutput {
-//     @builtin(position) position : vec4<f32>,
-//     @location(0) localPos : vec2<f32>, // quad-local position
-// };
-
-// struct CanvasSize {
-//     width : f32,
-//     height : f32,
-// };
-
-// @vertex
-// fn vs_main(
-//     @location(0) quadPos : vec2<f32>,
-//     @location(1) instancePos : vec2<f32>,   // pixels
-//     @location(2) radius : f32               // pixels
-// ) -> VertexOutput {
-
-//     let inv_cw = 2.0 / canvas.width;
-//     let inv_ch = 2.0 / canvas.height;
-
-//     let ndcX = instancePos.x * inv_cw - 1.0;
-//     let ndcY = 1.0 - instancePos.y * inv_ch;
-
-//     let rX = radius * inv_cw;
-//     let rY = radius * inv_ch;
-
-//     var out : VertexOutput;
-//     out.position = vec4<f32>(
-//         ndcX + quadPos.x * rX,
-//         ndcY + quadPos.y * rY,
-//         0.0,
-//         1.0
-//     );
-
-//     // Pass quad-local coordinates directly
-//     out.localPos = quadPos;
-
-//     return out;
-// }
-// `;
-
 const vertex_shader_code = `
+struct VertexOutput {
+    @builtin(position) position : vec4<f32>,
+    @location(0) localPos : vec2<f32>, // quad-local position
+};
+
+struct CanvasSize {
+    width : f32,
+    height : f32,
+};
+
 @vertex
-fn vs_main(@builtin(vertex_index) i : u32) -> @builtin(position) vec4<f32> {
-    var pos = array<vec2<f32>, 4>(
-        vec2<f32>(-1.0, -1.0),
-        vec2<f32>( 1.0, -1.0),
-        vec2<f32>(-1.0,  1.0),
-        vec2<f32>( 1.0,  1.0)
+fn vs_main(
+    @location(0) quadPos : vec2<f32>,
+    @location(1) instancePos : vec2<f32>,   // pixels
+    @location(2) radius : f32               // pixels
+) -> VertexOutput {
+
+    let inv_cw = 2.0 / canvas.width;
+    let inv_ch = 2.0 / canvas.height;
+
+    let ndcX = instancePos.x * inv_cw - 1.0;
+    let ndcY = 1.0 - instancePos.y * inv_ch;
+
+    let rX = radius * inv_cw;
+    let rY = radius * inv_ch;
+
+    var out : VertexOutput;
+    out.position = vec4<f32>(
+        ndcX + quadPos.x * rX,
+        ndcY + quadPos.y * rY,
+        0.0,
+        1.0
     );
-    return vec4<f32>(pos[i], 0.0, 1.0);
+
+    // Pass quad-local coordinates directly
+    out.localPos = quadPos;
+
+    return out;
 }
-`
+`;
 
-// const fragment_shader_code = `
-// @fragment
-// fn fs_main(
-//     @location(0) localPos : vec2<f32>
-// ) -> @location(0) vec4<f32> {
-
-//     // localPos ranges from -0.5 to 0.5
-//     let dist = length(localPos);
-
-//     if (dist > 0.5) {
-//         discard;
-//     }
-
-//     return vec4<f32>(1.0, 0.5, 0.0, 1.0);
+// const vertex_shader_code = `
+// @vertex
+// fn vs_main(@builtin(vertex_index) i : u32) -> @builtin(position) vec4<f32> {
+//     var pos = array<vec2<f32>, 4>(
+//         vec2<f32>(-1.0, -1.0),
+//         vec2<f32>( 1.0, -1.0),
+//         vec2<f32>(-1.0,  1.0),
+//         vec2<f32>( 1.0,  1.0)
+//     );
+//     return vec4<f32>(pos[i], 0.0, 1.0);
 // }
 // `
 
 const fragment_shader_code = `
 @fragment
-fn fs_main() -> @location(0) vec4<f32> {
-    return vec4<f32>(1.0, 0.0, 0.0, 1.0);
+fn fs_main(
+    @location(0) localPos : vec2<f32>
+) -> @location(0) vec4<f32> {
+
+    // localPos ranges from -0.5 to 0.5
+    let dist = length(localPos);
+
+    if (dist > 0.5) {
+        discard;
+    }
+
+    return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
 }
 `
+
+// const fragment_shader_code = `
+// @fragment
+// fn fs_main() -> @location(0) vec4<f32> {
+//     return vec4<f32>(1.0, 0.0, 0.0, 1.0);
+// }
+// `
 
 const vertex_module = device.createShaderModule({
     code: vertex_shader_code
