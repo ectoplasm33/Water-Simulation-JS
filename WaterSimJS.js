@@ -324,8 +324,6 @@ async function main_loop() {
         particle_keys[i] = key;
     }
 
-    console.log(grid);
-
     for (let i = 0; i < num_particles; i++) {
         let k = particle_keys[i];
 
@@ -571,6 +569,8 @@ async function main_loop() {
             }
         }
     }
+
+    console.log(mouse_x + ", " + mouse_y + "\n" + lmb + ", " + rmb);
 
     const count = num_particles*num_vars;
 
