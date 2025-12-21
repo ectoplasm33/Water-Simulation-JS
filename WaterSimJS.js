@@ -297,7 +297,7 @@ async function main_loop() {
         let cx = Math.floor(particle_data[j+4] * inv_cs);
         let cy = Math.floor(particle_data[j+5] * inv_cs);
 
-        let key = cy * grid_hash + cx;
+        const key = cy * grid_hash + cx;
 
         if (!grid.has(key)) {
             grid.set(key, []);
@@ -307,6 +307,8 @@ async function main_loop() {
 
         particle_keys[i] = key;
     }
+
+    console.log(grid);
 
     for (let i = 0; i < num_particles; i++) {
         let k = particle_keys[i];
@@ -324,6 +326,8 @@ async function main_loop() {
                 if (!cell) continue;
 
                 for (let j = 0; j < cell.length; j++) {
+                    if (cell[j] == k) continue;
+
                     particle_neighbors[i][num] = cell[j];
                     num++;
                 }   
@@ -334,7 +338,7 @@ async function main_loop() {
 
         num = 0;
         
-        let density = 0.0;
+        let density = 0.0; 
 
         const p = i*num_vars;
 
@@ -356,9 +360,9 @@ async function main_loop() {
                 let q2 = q*q;
                 let q3 = q2*q;
 
-                neighbor_info[i][num][3] = q;
+                //neighbor_info[i][num][3] = q;
                 neighbor_info[i][num][4] = q2;
-                neighbor_info[i][num][5] = q3;
+                //neighbor_info[i][num][5] = q3;
 
                 density += q3;
 
@@ -405,7 +409,10 @@ async function main_loop() {
 
             const pressure_j = (n_density - target_density) * pressure_multiplier;
 
-            const inv_nd = 1.0 / n_density;
+            let inv_nd = 0.0;
+            if (n_density > 0) {
+                inv_nd = 1.0 / n_density;
+            }
 
             let q2 = neighbor[4];
 
@@ -502,8 +509,8 @@ async function main_loop() {
             //add color based on velocity
         }
 
-        let x = particle_data[p] + particle_data[p+2];
-        let y = particle_data[p+1] + particle_data[p+3];
+        let x = particle_data[p] + vx;
+        let y = particle_data[p+1] + vy;
 
         if (x < -canvas_x) {
             x = -canvas_x;
@@ -520,11 +527,11 @@ async function main_loop() {
             vy *= -0.5;
         }
 
-        new_particles[p+2] = vx;
-        new_particles[p+3] = vy;
-
         new_particles[p] = x;
         new_particles[p+1] = y;
+
+        new_particles[p+2] = vx;
+        new_particles[p+3] = vy;
 
         new_particles[p+4] = x + vx;
         new_particles[p+5] = y + vy;
