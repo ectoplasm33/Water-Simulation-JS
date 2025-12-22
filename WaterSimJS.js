@@ -26,7 +26,7 @@ const grid_hash = canvas.width + 1;
 const target_fps = 120;
 const delay = 1000.0 / target_fps;
 
-let mouse_strength = 0.5;
+let mouse_strength = 2;
 let mouse_influence_r = 250.0;
 let mouse_r2 = mouse_influence_r * mouse_influence_r;
 
@@ -337,10 +337,10 @@ async function main_loop() {
 
             for (let dx = -1; dx < 2; dx++) {
                 const key = k + dx + row_key;
+                
+                if (!grid.has(key)) continue;
 
                 const cell = grid.get(key);
-
-                if (!cell) continue;
 
                 for (let j = 0; j < cell.length; j++) {
                     if (cell[j] == i) continue;
@@ -484,11 +484,10 @@ async function main_loop() {
         const nx = values[2];
         const ny = values[3];
 
-        let k = 0.0;
-
         let mag = nx*nx + ny*ny;
 
         if (mag > 0.01) {
+            let k = 0.0;
             const size = particle_neighbor_count[i];
 
             for (let j = 0; j < size; j++) {
