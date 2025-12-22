@@ -1,3 +1,4 @@
+
 let num_particles = 3800;
 let max_particles = 12000;
 let influence_radius = 48.0;
@@ -57,6 +58,8 @@ canvas.x = 0;
 canvas.y = 0;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
+const particle_radius = 3.0 / canvas.width;
 
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
@@ -134,8 +137,6 @@ const mouse_strength_slider = document.getElementById('mouse_strength_slider');
 mouse_strength_slider.min = 0.01;
 mouse_strength_slider.max = 3;
 mouse_strength_slider.value = mouse_strength;
-
-const particle_radius = 3.0 / canvas.width;
 
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
