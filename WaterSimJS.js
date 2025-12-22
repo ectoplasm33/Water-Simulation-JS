@@ -513,8 +513,8 @@ async function main_loop() {
             fy += ny * q;
         }
 
-        let vx = particle_data[p+2] + fx;
-        let vy = particle_data[p+3] + fy + gravity;
+        let vx = particle_data[p+2] + fx * .01;
+        let vy = particle_data[p+3] + (fy + gravity) * .01;
 
         const m2 = vx*vx + vy*vy;
 
