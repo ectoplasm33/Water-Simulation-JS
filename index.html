@@ -18,7 +18,37 @@
     </head>
 
     <body>
-        <canvas width="1200" height="800"></canvas>
+        <div>
+            <canvas width="1200" height="800"></canvas>
+
+            <input type="range" class="slider" id="particle_count_slider">
+            <span id="particle_count_label"></span>
+
+            <input type="range" class="slider" id="influence_radius_slider">
+            <span id="influence_radius_label"></span>
+
+            <input type="range" class="slider" id="gravity_slider">
+            <span id="gravity_label"></span>
+
+            <input type="range" class="slider" id="target_density_slider">
+            <span id="target_density_label"></span>   
+            
+            <input type="range" class="slider" id="pressure_multiplier_slider">
+            <span id="pressure_multiplier_label"></span>   
+
+            <input type="range" class="slider" id="viscosity_multiplier_slider">
+            <span id="viscosity_multiplier_label"></span>   
+
+            <input type="range" class="slider" id="surface_tension_slider">
+            <span id="surface_tension_label"></span>   
+
+            <input type="range" class="slider" id="mouse_range_slider">
+            <span id="mouse_range_label"></span>   
+
+            <input type="range" class="slider" id="mouse_strength_slider">
+            <span id="mouse_strength_label"></span>   
+        </div>
+        
         <script type="module" src = "WaterSimJS.js"></script>
     </body>
 </html>
