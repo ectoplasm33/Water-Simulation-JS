@@ -25,8 +25,8 @@ let mouse_r2 = mouse_influence_r * mouse_influence_r;
 let lmb = false;
 let rmb = false;
 
-let mouse_x;
-let mouse_y;
+let mouse_x = -1e5;
+let mouse_y = -1e5;
 
 let render_colors = false;
 let show_ui = false;
@@ -106,7 +106,7 @@ influence_radius_slider.value = influence_radius * 1000;
 const gravity_slider = document.getElementById('gravity_slider');
 gravity_slider.min = 0;
 gravity_slider.max = 1.5 * 1000;
-gravity_slider.value = gravity * 1000;
+gravity_slider.value = -gravity * 1000;
 
 const target_density_slider = document.getElementById('target_density_slider');
 target_density_slider.min = 0;
@@ -114,29 +114,29 @@ target_density_slider.max = 15 * 1000;
 target_density_slider.value = target_density * 1000;
 
 const pressure_multiplier_slider = document.getElementById('pressure_multiplier_slider');
-pressure_multiplier_slider.min = 0.001; 
-pressure_multiplier_slider.max = 2.5;
-pressure_multiplier_slider.value = pressure_multiplier;
+pressure_multiplier_slider.min = 0.001 * 1000; 
+pressure_multiplier_slider.max = 2.5 * 1000;
+pressure_multiplier_slider.value = pressure_multiplier * 1000;
 
 const viscosity_multiplier_slider = document.getElementById('viscosity_multiplier_slider');
 viscosity_multiplier_slider.min = 0;
-viscosity_multiplier_slider.max = 1;
-viscosity_multiplier_slider.value = viscosity_multipler;
+viscosity_multiplier_slider.max = 1 * 1000;
+viscosity_multiplier_slider.value = viscosity_multipler * 1000;
 
 const surface_tension_slider = document.getElementById('surface_tension_slider');
 surface_tension_slider.min = 0;
-surface_tension_slider.max = 10;
-surface_tension_slider.value = surface_tension_mp;
+surface_tension_slider.max = 10 * 1000;
+surface_tension_slider.value = surface_tension_mp * 1000;
 
 const mouse_range_slider = document.getElementById('mouse_range_slider');
-mouse_range_slider.min = 20; 
-mouse_range_slider.max = 500;
-mouse_range_slider.value = mouse_influence_r;
+mouse_range_slider.min = 20 * 1000;  
+mouse_range_slider.max = 500 * 1000;
+mouse_range_slider.value = mouse_influence_r * 1000;
 
 const mouse_strength_slider = document.getElementById('mouse_strength_slider');
-mouse_strength_slider.min = 0.01;
-mouse_strength_slider.max = 3;
-mouse_strength_slider.value = mouse_strength;
+mouse_strength_slider.min = 0.01 * 1000;
+mouse_strength_slider.max = 3 * 1000;
+mouse_strength_slider.value = mouse_strength * 1000;
 
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
@@ -531,8 +531,8 @@ async function main_loop() {
         }
 
         if (!show_ui) {
-            const dx = mouse_x - new_particles[p];
-            const dy = mouse_y - new_particles[p+1];
+            const dx = mouse_x - x;
+            const dy = mouse_y - y;
             const dist = dx*dx + dy*dy;
 
             if (dist < mouse_r2 && dist > 0) {
@@ -558,8 +558,6 @@ async function main_loop() {
         new_particles[p+4] = x + vx;
         new_particles[p+5] = y + vy;
     }
-
-    console.log(mouse_x + ", " + mouse_y + "\n" + lmb + ", " + rmb);
 
     const count = num_particles*num_vars;
 
