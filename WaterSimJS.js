@@ -52,6 +52,12 @@ const calculated_values = new Array(max_particles);
 
 const particle_keys = new Int32Array(max_particles);
 
+const canvas = document.querySelector('canvas');
+canvas.x = 0;
+canvas.y = 0;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
     particle_data[j] = (Math.random()-0.5) * canvas.width;
@@ -129,11 +135,6 @@ mouse_strength_slider.min = 0.01;
 mouse_strength_slider.max = 3;
 mouse_strength_slider.value = mouse_strength;
 
-const canvas = document.querySelector('canvas');
-canvas.x = 0;
-canvas.y = 0;
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 const particle_radius = 3.0 / canvas.width;
 
 const canvas_x = canvas.width * 0.5;
