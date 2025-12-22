@@ -81,21 +81,52 @@ for (let i = 0; i < max_particles; i++) {
     }
 }
 
+const slider_spacing = 50;
+
 const particle_count_slider = document.getElementById('particle_count_slider');
 particle_count_slider.min = 500;
 particle_count_slider.max = max_particles;
+particle_count_slider.value = num_particles;
 
 const influence_radius_slider = document.getElementById('influence_radius_slider');
 influence_radius_slider.min = 10 * 1000;
 influence_radius_slider.max = 150 * 1000;
+influence_radius_slider.value = influence_radius * 1000;
 
 const gravity_slider = document.getElementById('gravity_slider');
 gravity_slider.min = 0;
 gravity_slider.max = 1.5 * 1000;
+gravity_slider.value = gravity * 1000;
 
 const target_density_slider = document.getElementById('target_density_slider');
 target_density_slider.min = 0;
 target_density_slider.max = 15 * 1000;
+target_density_slider.value = target_density * 1000;
+
+const pressure_multiplier_slider = document.getElementById('pressure_multiplier_slider');
+pressure_multiplier_slider.min = 0.001; 
+pressure_multiplier_slider.max = 2.5;
+pressure_multiplier_slider.value = pressure_multiplier;
+
+const viscosity_multiplier_slider = document.getElementById('viscosity_multiplier_slider');
+viscosity_multiplier_slider.min = 0;
+viscosity_multiplier_slider.max = 1;
+viscosity_multiplier_slider.value = viscosity_multipler;
+
+const surface_tension_slider = document.getElementById('surface_tension_slider');
+surface_tension_slider.min = 0;
+surface_tension_slider.max = 10;
+surface_tension_slider.value = surface_tension_mp;
+
+const mouse_range_slider = document.getElementById('mouse_range_slider');
+mouse_range_slider.min = 20; 
+mouse_range_slider.max = 500;
+mouse_range_slider.value = mouse_influence_r;
+
+const mouse_strength_slider = document.getElementById('mouse_strength_slider');
+mouse_strength_slider.min = 0.01;
+mouse_strength_slider.max = 3;
+mouse_strength_slider.value = mouse_strength;
 
 const canvas = document.querySelector('canvas');
 canvas.x = 0;
