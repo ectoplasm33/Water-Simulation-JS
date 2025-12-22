@@ -134,51 +134,6 @@ const instance_buffer = device.createBuffer({
 
 const uniform_data = new Float32Array([canvas.width, canvas.height]);
 
-// const uniform_buffer = device.createBuffer({
-//     size: uniform_data.byteLength,
-//     usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST
-// });
-//device.queue.writeBuffer(uniform_buffer, 0, uniform_data);
-
-// const vertex_shader_code = `
-// struct VertexOutput {
-//     @builtin(position) position : vec4<f32>,
-//     @location(0) localPos : vec2<f32>, // quad-local position
-// };
-
-// @vertex
-// fn vs_main(
-//     @location(0) quadPos : vec2<f32>,
-//     @location(1) instancePos : vec2<f32>,   // pixels
-// ) -> VertexOutput {
-//     var out : VertexOutput;
-//     out.position = vec4<f32>(
-//         instancePos.x,
-//         instancePos.y,
-//         0.0,
-//         1.0
-//     );
-
-//     // Pass quad-local coordinates directly
-//     out.localPos = quadPos;
-
-//     return out;
-// }
-// `;
-
-// const vertex_shader_code = `
-// @vertex
-// fn vs_main(@builtin(vertex_index) i : u32) -> @builtin(position) vec4<f32> {
-//     var pos = array<vec2<f32>, 4>(
-//         vec2<f32>(-1.0, -1.0),
-//         vec2<f32>( 1.0, -1.0),
-//         vec2<f32>(-1.0,  1.0),
-//         vec2<f32>( 1.0,  1.0)
-//     );
-//     return vec4<f32>(pos[i], 0.0, 1.0);
-// }
-// `
-
 const vertex_shader_code = `
 struct vertexOutput {
     @builtin(position) position : vec4<f32>,
@@ -224,13 +179,6 @@ fn fs_main(
     return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
 }
 `;
-
-// const fragment_shader_code = `
-// @fragment
-// fn fs_main() -> @location(0) vec4<f32> {
-//     return vec4<f32>(1.0, 0.0, 0.0, 1.0);
-// }
-// `
 
 const vertex_module = device.createShaderModule({
     code: vertex_shader_code
@@ -291,7 +239,7 @@ const inv_ch = 2.0 / canvas.height;
 canvas.addEventListener("mousemove", e => {
     const rect = canvas.getBoundingClientRect();
     mouse_x = e.clientX - rect.left - canvas_x;
-    mouse_y = e.clientY - rect.top - canvas_y;
+    mouse_y = rect.top - e.clientY + canvas_y;
 });
 
 canvas.addEventListener("mousedown", e => {
