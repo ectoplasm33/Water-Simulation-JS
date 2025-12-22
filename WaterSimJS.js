@@ -6,11 +6,11 @@ const particle_radius = 3.0 / canvas.width;
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
 
-let num_particles = 8000;
-let max_particles = 20000;
+let num_particles = 4000;
+let max_particles = 12000;
 let influence_radius = 48.0;
-let target_density  = 7;
-let pressure_multiplier = 0.15;
+let target_density  = 6.5;
+let pressure_multiplier = 0.16;
 let viscosity_multipler = 0.13;
 let surface_tension_mp = 1.0;
 let gravity = -0.25;
@@ -485,15 +485,6 @@ async function main_loop() {
             vy *= -0.5;
         }
 
-        new_particles[p] = x;
-        new_particles[p+1] = y;
-
-        new_particles[p+2] = vx;
-        new_particles[p+3] = vy;
-
-        new_particles[p+4] = x + vx;
-        new_particles[p+5] = y + vy;
-
         if (!show_ui) {
             const dx = mouse_x - new_particles[p];
             const dy = mouse_y - new_particles[p+1];
@@ -503,15 +494,24 @@ async function main_loop() {
                 const influence = mouse_strength / Math.sqrt(dist);
 
                 if (lmb) {
-                    new_particles[p] -= dx * influence;
-                    new_particles[p+1] -= dy * influence;
+                    vx -= dx * influence;
+                    vy -= dy * influence;
                 } 
                 if (rmb) {
-                    new_particles[p] += dx * influence;
-                    new_particles[p+1] += dy * influence;
+                    vx += dx * influence;
+                    vy += dy * influence;
                 }
             }
         }
+
+        new_particles[p] = x;
+        new_particles[p+1] = y;
+
+        new_particles[p+2] = vx;
+        new_particles[p+3] = vy;
+
+        new_particles[p+4] = x + vx;
+        new_particles[p+5] = y + vy;
     }
 
     console.log(mouse_x + ", " + mouse_y + "\n" + lmb + ", " + rmb);
