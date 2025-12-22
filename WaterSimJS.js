@@ -6,13 +6,13 @@ const particle_radius = 3.0 / canvas.width;
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
 
-let num_particles = 5000;
-let max_particles = 10000;
-let influence_radius = 60.0;
-let target_density  = 4.3;
-let pressure_multiplier = 0.3;
+let num_particles = 8000;
+let max_particles = 20000;
+let influence_radius = 48.0;
+let target_density  = 7;
+let pressure_multiplier = 0.15;
 let viscosity_multipler = 0.13;
-let surface_tension_mp = 1.2;
+let surface_tension_mp = 1.0;
 let gravity = -0.25;
 
 let h_sq = influence_radius * influence_radius;
