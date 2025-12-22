@@ -312,8 +312,8 @@ async function main_loop() {
     for (let i = 0; i < num_particles; i++) {
         const j = i*num_vars;
         
-        const cx = Math.floor(particle_data[j+4] * inv_cs);
-        const cy = Math.floor(particle_data[j+5] * inv_cs);
+        const cx = 1e6 + Math.floor(particle_data[j+4] * inv_cs);
+        const cy = 1e6 + Math.floor(particle_data[j+5] * inv_cs);
 
         const key = cy * grid_hash + cx;
 
@@ -327,9 +327,11 @@ async function main_loop() {
     }
 
     for (let i = 0; i < num_particles; i++) {
+        const p = i*num_vars;
         const k = particle_keys[i];
 
         let num = 0;
+        let density = 0.0;
         
         let brk = false;
         for (let dy = -1; dy < 2; dy++) {
@@ -344,52 +346,41 @@ async function main_loop() {
 
                 for (let j = 0; j < cell.length; j++) {
                     if (cell[j] == i) continue;
+                    
+                    const n = cell[j]*num_vars;
 
-                    particle_neighbors[i][num] = cell[j];
-                    num++;
+                    const dx = particle_data[n+4] - particle_data[p+4];
+                    const dy = particle_data[n+5] - particle_data[p+5];
+                    let dist = dx*dx + dy*dy;
 
-                    if (num == max_neighbors) brk = true; break;
+                    if (dist < h_sq) {
+                        particle_neighbors[i][num] = cell[j];
+                        neighbor_info[i][num][0] = dx;
+                        neighbor_info[i][num][1] = dy;
+                        dist = Math.sqrt(dist);
+                        neighbor_info[i][num][2] = dist;
+
+                        let q = (influence_radius - dist) * inv_h;
+                        let q2 = q*q;
+                        let q3 = q2*q;
+
+                        neighbor_info[i][num][3] = q;
+                        neighbor_info[i][num][4] = q2;
+                        neighbor_info[i][num][5] = q3;
+
+                        density += q3;
+
+                        num++;
+                    }  
+
+                    if (num == max_neighbors) { 
+                        brk = true;
+                        break;
+                    }
                 }   
-
                 if (brk) break;
             }  
             if (brk) break;  
-        }
-
-        const count = num;
-
-        num = 0;
-        
-        let density = 0.0; 
-
-        const p = i*num_vars;
-
-        for (let j = 0; j < count; j++) {
-            const n = particle_neighbors[i][j]*num_vars;
-            
-            const dx = particle_data[n+4] - particle_data[p+4];
-            const dy = particle_data[n+5] - particle_data[p+5];
-            let dist = dx*dx + dy*dy;
-
-            if (dist < h_sq) {
-                neighbors_in_radius[i][num] = particle_neighbors[i][j];
-                neighbor_info[i][num][0] = dx;
-                neighbor_info[i][num][1] = dy;
-                dist = Math.sqrt(dist);
-                neighbor_info[i][num][2] = dist;
-
-                let q = (influence_radius - dist) * inv_h;
-                let q2 = q*q;
-                let q3 = q2*q;
-
-                neighbor_info[i][num][3] = q;
-                neighbor_info[i][num][4] = q2;
-                neighbor_info[i][num][5] = q3;
-
-                density += q3;
-
-                num++;
-            }
         }
 
         particle_data[p+6] = Math.max(density, 1e-6);
@@ -512,8 +503,8 @@ async function main_loop() {
             fy += ny * q;
         }
 
-        let vx = particle_data[p+2] + fx * .01;
-        let vy = particle_data[p+3] + (fy + gravity) * .01;
+        let vx = particle_data[p+2] + fx;
+        let vy = particle_data[p+3] + fy + gravity;
 
         const m2 = vx*vx + vy*vy;
 
