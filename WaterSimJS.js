@@ -1,12 +1,4 @@
-const canvas = document.querySelector('canvas');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-const particle_radius = 3.0 / canvas.width;
-
-const canvas_x = canvas.width * 0.5;
-const canvas_y = canvas.height * 0.5;
-
-let num_particles = 4000;
+let num_particles = 3800;
 let max_particles = 12000;
 let influence_radius = 48.0;
 let target_density  = 6.5;
@@ -26,7 +18,7 @@ const grid_hash = canvas.width + 1;
 const target_fps = 120;
 const delay = 1000.0 / target_fps;
 
-let mouse_strength = 2;
+let mouse_strength = .6;
 let mouse_influence_r = 250.0;
 let mouse_r2 = mouse_influence_r * mouse_influence_r;
 
@@ -88,6 +80,32 @@ for (let i = 0; i < max_particles; i++) {
         neighbor_info[i][j] = new Float32Array(6);
     }
 }
+
+const particle_count_slider = document.getElementById('particle_count_slider');
+particle_count_slider.min = 500;
+particle_count_slider.max = max_particles;
+
+const influence_radius_slider = document.getElementById('influence_radius_slider');
+influence_radius_slider.min = 10 * 1000;
+influence_radius_slider.max = 150 * 1000;
+
+const gravity_slider = document.getElementById('gravity_slider');
+gravity_slider.min = 0;
+gravity_slider.max = 1.5 * 1000;
+
+const target_density_slider = document.getElementById('target_density_slider');
+target_density_slider.min = 0;
+target_density_slider.max = 15 * 1000;
+
+const canvas = document.querySelector('canvas');
+canvas.x = 0;
+canvas.y = 0;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const particle_radius = 3.0 / canvas.width;
+
+const canvas_x = canvas.width * 0.5;
+const canvas_y = canvas.height * 0.5;
 
 const ratio = canvas.width / canvas.height;
 
@@ -220,19 +238,6 @@ const pipeline = device.createRenderPipeline({
     layout: 'auto'
 });
 
-
-// const bindGroup = device.createBindGroup({
-//     layout: pipeline.getBindGroupLayout(0),
-//     entries: [
-//         {
-//             binding: 0,
-//             resource: { buffer: uniform_buffer }
-//         }
-//     ]
-// });
-
-// main loop
-
 const inv_cw = 2.0 / canvas.width;
 const inv_ch = 2.0 / canvas.height;
 
@@ -250,6 +255,10 @@ canvas.addEventListener("mousedown", e => {
 canvas.addEventListener("mouseup", e => {
     if (e.button == 0) lmb = false;
     if (e.button == 2) rmb = false;
+});
+
+canvas.addEventListener('contextmenu', function(event) {
+    event.preventDefault(); 
 });
 
 async function main_loop() {
