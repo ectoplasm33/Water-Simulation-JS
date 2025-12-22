@@ -53,7 +53,6 @@ const normalized_particles = new Float32Array(max_particles * render_vars)
 
 const max_neighbors = 150;
 const particle_neighbors = new Array(max_particles);
-const neighbors_in_radius = new Array(max_particles);
 const particle_neighbor_count = new Int16Array(max_particles);
 
 const neighbor_info = new Array(max_particles);
@@ -81,7 +80,6 @@ for (let i = 0; i < num_particles; i++) {
 
 for (let i = 0; i < max_particles; i++) {
     particle_neighbors[i] = new Int32Array(max_neighbors);
-    neighbors_in_radius[i] = new Int32Array(max_neighbors);
     neighbor_info[i] = new Array(max_neighbors);
     calculated_values[i] = new Float32Array(4)
     particle_neighbor_count[i] = 0;
@@ -402,7 +400,7 @@ async function main_loop() {
         const count = particle_neighbor_count[i];
 
         for (let j = 0; j < count; j++) {
-            const n = neighbors_in_radius[i][j]*num_vars;
+            const n = particle_neighbors[i][j]*num_vars;
 
             const neighbor = neighbor_info[i][j];
 
@@ -482,7 +480,7 @@ async function main_loop() {
             const size = particle_neighbor_count[i];
 
             for (let j = 0; j < size; j++) {
-                const n = neighbors_in_radius[i][j]
+                const n = particle_neighbors[i][j]
                 const neighbor_vals = calculated_values[n];
                 const neighbor = neighbor_info[i][j];
 
