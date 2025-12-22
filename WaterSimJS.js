@@ -13,7 +13,6 @@ let inv_rep_r = 1.0 / repulsion_radius;
 let inv_h = 1.0 / influence_radius;
 let cell_size = influence_radius;
 let inv_cs = 1.0 / cell_size;
-const grid_hash = canvas.width + 1;
 
 const target_fps = 120;
 const delay = 1000.0 / target_fps;
@@ -87,6 +86,8 @@ const particle_count_slider = document.getElementById('particle_count_slider');
 particle_count_slider.min = 500;
 particle_count_slider.max = max_particles;
 particle_count_slider.value = num_particles;
+particle_count_slider.x = 10;
+particle_count_slider.y = 10;
 
 const influence_radius_slider = document.getElementById('influence_radius_slider');
 influence_radius_slider.min = 10 * 1000;
@@ -137,6 +138,8 @@ const particle_radius = 3.0 / canvas.width;
 
 const canvas_x = canvas.width * 0.5;
 const canvas_y = canvas.height * 0.5;
+
+const grid_hash = canvas.width + 1;
 
 const ratio = canvas.width / canvas.height;
 
