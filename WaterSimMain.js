@@ -133,7 +133,7 @@ const vertex_shader_code = `
 struct vertexOutput {
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>,
-    @location(1) radius : f32
+    @location(1) r : vec2<f32>
 };
 
 @vertex
@@ -151,7 +151,7 @@ fn vs_main(
     );
 
     out.localPos = quadPos;
-    out.radius = radius;
+    out.r = r;
 
     return out;
 }
@@ -162,12 +162,12 @@ const fragment_shader_code = `
 fn fs_main(
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>,
-    @location(1) radius : f32
+    @location(1) r : vec2<f32>
 ) -> @location(0) vec4<f32> {
     var norm : vec2<f32>;
-    norm = localPos / radius;
+    norm = localPos / r;
 
-    if (length(norm) > radius.x) {
+    if (length(norm) > r.x) {
         discard;
     }
 
