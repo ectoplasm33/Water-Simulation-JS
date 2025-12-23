@@ -64,7 +64,7 @@ influence_radius_slider.left = pixels(slider_dx);
 influence_radius_slider.bottom = pixels(top_spacing + slider_dy);
 influence_radius_label.left = pixels(slider_dx + slider_width * 0.5);
 influence_radius_label.bottom = pixels(top_spacing + slider_dy + label_dy);
-influence_radius_label.innerHTML = toFixed(influence_radius_slider.value * 0.001,0);
+influence_radius_label.innerHTML = String(toFixed(Number(influence_radius_slider.value) * 0.001,0));
 
 const gravity_slider = document.getElementById('gravity_slider');
 const gravity_label = document.getElementById('gravity_label');
@@ -76,7 +76,7 @@ gravity_slider.left = pixels(slider_dx);
 gravity_slider.bottom = pixels(top_spacing * 2 + slider_dy);
 gravity_label.left = pixels(slider_dx + slider_width * 0.5);
 gravity_label.bottom = pixels(top_spacing * 2 + slider_dy + label_dy);
-gravity_label.innerHTML = toFixed(gravity_slider.value * 0.001, 3);
+gravity_label.innerHTML = String(toFixed(Number(gravity_slider.value) * 0.001, 3));
 
 const target_density_slider = document.getElementById('target_density_slider');
 const target_density_label = document.getElementById('target_density_label');
@@ -88,7 +88,7 @@ target_density_slider.left = pixels(slider_dx);
 target_density_slider.bottom = pixels(top_spacing * 3 + slider_dy);
 target_density_label.left = pixels(slider_dx + slider_width * 0.5);
 target_density_label.bottom = pixels(top_spacing * 3 + slider_dy + label_dy);
-target_density_label.innerHTML = toFixed(target_density_slider.value * 0.001, 3);
+target_density_label.innerHTML = String(toFixed(Number(target_density_slider.value) * 0.001, 3));
 
 const pressure_multiplier_slider = document.getElementById('pressure_multiplier_slider');
 const pressure_multiplier_label = document.getElementById('pressure_multiplier_label');
@@ -100,7 +100,7 @@ pressure_multiplier_slider.left = pixels(slider_dx);
 pressure_multiplier_slider.bottom = pixels(top_spacing * 4 + slider_dy);
 pressure_multiplier_label.left = pixels(slider_dx + slider_width * 0.5);
 pressure_multiplier_label.bottom = pixels(top_spacing * 4 + slider_dy + label_dy);
-pressure_multiplier_label.innerHTML = toFixed(pressure_multiplier_slider.value * 0.001, 3);
+pressure_multiplier_label.innerHTML = String(toFixed(Number(pressure_multiplier_slider.value) * 0.001, 3));
 
 const viscosity_multiplier_slider = document.getElementById('viscosity_multiplier_slider');
 const viscosity_multipler_label = document.getElementById('viscosity_multiplier_label');
@@ -112,7 +112,7 @@ viscosity_multiplier_slider.left = pixels(slider_dx);
 viscosity_multiplier_slider.bottom = pixels(top_spacing * 5 + slider_dy);
 viscosity_multipler_label.left = pixels(slider_dx + slider_width * 0.5);
 viscosity_multipler_label.bottom = pixels(top_spacing * 5 + slider_dy + label_dy);
-viscosity_multipler_label.innerHTML = toFixed(viscosity_multiplier_slider.value * 0.001, 3);
+viscosity_multipler_label.innerHTML = String(toFixed(Number(viscosity_multiplier_slider.value) * 0.001, 3));
 
 const surface_tension_slider = document.getElementById('surface_tension_slider');
 const surface_tension_label = document.getElementById('surface_tension_label');
@@ -124,7 +124,7 @@ surface_tension_slider.left = pixels(slider_dx);
 surface_tension_slider.bottom = pixels(top_spacing * 6 + slider_dy);
 surface_tension_label.left = pixels(slider_dx + slider_width * 0.5);
 surface_tension_label.bottom = pixels(top_spacing * 6 + slider_dy + label_dy);
-surface_tension_label.innerHTML = toFixed(surface_tension_slider.value * 0.001, 3);
+surface_tension_label.innerHTML = String(toFixed(Number(surface_tension_slider.value) * 0.001, 3));
 
 const mouse_range_slider = document.getElementById('mouse_range_slider');
 const mouse_range_label = document.getElementById('mouse_range_label');
@@ -136,7 +136,7 @@ mouse_range_slider.left = pixels(slider_dx);
 mouse_range_slider.bottom = pixels(top_spacing * 7 + slider_dy);
 mouse_range_label.left = pixels(slider_dx + slider_width * 0.5);
 mouse_range_label.bottom = pixels(top_spacing * 7 + slider_dy + label_dy);
-mouse_range_label.innerHTML = toFixed(mouse_range_slider.value * 0.001, 3);
+mouse_range_label.innerHTML = String(toFixed(Number(mouse_range_slider.value) * 0.001, 3));
 
 const mouse_strength_slider = document.getElementById('mouse_strength_slider');
 const mouse_strength_label = document.getElementById('mouse_strength_label');
@@ -148,16 +148,16 @@ mouse_strength_slider.left = pixels(slider_dx);
 mouse_strength_slider.bottom = pixels(top_spacing * 8 + slider_dy);
 mouse_strength_label.left = pixels(slider_dx + slider_width * 0.5);
 mouse_strength_label.bottom = pixels(top_spacing * 8 + slider_dy + label_dy);
-mouse_strength_label.innerHTML = toFIxed(mouse_strength_slider.value * 0.001, 3);
+mouse_strength_label.innerHTML = String(toFIxed(Number(mouse_strength_slider.value) * 0.001, 3));
 
 particle_count_slider.oninput = function() {
-    const value = particle_count_slider.value
+    const value = Number(particle_count_slider.value)
     num_particles = value;
-    particle_count_label.innerHTML = value;
+    particle_count_label.innerHTML = String(value);
 }
 
 influence_radius_slider.oninput = function() {
-    const value = influence_radius_slider.value * 0.001;
+    const value = Number(influence_radius_slider.value) * 0.001;
     influence_radius = value;
     h_sq = influence_radius * influence_radius;
     inv_h = 1.0 / influence_radius;
@@ -165,48 +165,48 @@ influence_radius_slider.oninput = function() {
     inv_rep_r = 1.0 / repulsion_radius;
     cell_size = influence_radius;
     inv_cs = inv_h;
-    influence_radius_label.innerHTML = toFixed(value, 3);
+    influence_radius_label.innerHTML = String(toFixed(value, 3));
 }
 
 gravity_slider.oninput = function() {
-    const value = gravity_slider.value * 0.001;
+    const value = Number(gravity_slider.value) * 0.001;
     gravity = value;
-    gravity_label.innerHTML = toFixed(value, 3);
+    gravity_label.innerHTML = String(toFixed(value, 3));
 }
 
 target_density_slider.oninput = function() {
-    const value = target_density_slider.value * 0.001;
+    const value = Number(target_density_slider.value) * 0.001;
     target_density = value;
-    target_density_label.innerHTML = toFixed(value, 3);
+    target_density_label.innerHTML = String(toFixed(value, 3));
 }
 
 pressure_multiplier_slider.oninput = function() {
-    const value = pressure_multiplier_slider.value * 0.001;
+    const value = Number(pressure_multiplier_slider.value) * 0.001;
     pressure_multiplier = value;
-    pressure_multiplier_label.innerHTML = toFixed(value, 3);
+    pressure_multiplier_label.innerHTML = String(toFixed(value, 3));
 }
 
 viscosity_multiplier_slider.oninput = function() {
-    const value = viscosity_multiplier_slider.value * 0.001;
+    const value = Number(viscosity_multiplier_slider.value) * 0.001;
     viscosity_multipler = value;
-    viscosity_multiplier_slider.innerHTML = toFixed(value, 3);
+    viscosity_multiplier_slider.innerHTML = String(toFixed(value, 3));
 }
 
 surface_tension_slider.oninput = function() {
-    const value = surface_tension_slider.value * 0.001;
+    const value = Number(surface_tension_slider.value) * 0.001;
     surface_tension_mp = value;
-    surface_tension_label.innerHTML = toFixed(value, 3);
+    surface_tension_label.innerHTML = String(toFixed(value, 3));
 }
 
 mouse_range_slider.oninput = function() {
-    const value = mouse_range_slider.value * 0.001;
+    const value = Number(mouse_range_slider.value) * 0.001;
     mouse_influence_r = value;
     mouse_r2 = mouse_influence_r * mouse_influence_r;
-    mouse_range_label.innerHTML = toFixed(value, 3);
+    mouse_range_label.innerHTML = String(toFixed(value, 3));
 }
 
 mouse_strength_slider.oninput = function() {
-    const value = mouse_strength_slider.value * 0.001;
+    const value = Number(mouse_strength_slider.value) * 0.001;
     mouse_strength = value;
-    mouse_strength_label.innerHTML = toFixed(value, 3);
+    mouse_strength_label.innerHTML = String(toFixed(value, 3));
 }
