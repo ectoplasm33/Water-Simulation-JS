@@ -2,38 +2,38 @@ function pixels(value) {
     return String(value) + "px";
 }
 
-let num_particles = 3800;
-let max_particles = 12000;
-let influence_radius = 48.0;
-let target_density  = 6.5;
-let pressure_multiplier = 0.16;
-let viscosity_multipler = 0.13;
-let surface_tension_mp = 1.0;
-let gravity = -0.25;
+export let num_particles = 3800;
+export let max_particles = 12000;
+export let influence_radius = 48.0;
+export let target_density  = 6.5;
+export let pressure_multiplier = 0.16;
+export let viscosity_multipler = 0.13;
+export let surface_tension_mp = 1.0;
+export let gravity = -0.25;
 
-let h_sq = influence_radius * influence_radius;
-let repulsion_radius = 0.5 * influence_radius;
-let inv_rep_r = 1.0 / repulsion_radius;
-let inv_h = 1.0 / influence_radius;
-let cell_size = influence_radius;
-let inv_cs = 1.0 / cell_size;
+export let h_sq = influence_radius * influence_radius;
+export let repulsion_radius = 0.5 * influence_radius;
+export let inv_rep_r = 1.0 / repulsion_radius;
+export let inv_h = 1.0 / influence_radius;
+export let cell_size = influence_radius;
+export let inv_cs = 1.0 / cell_size;
 
-const target_fps = 120;
-const delay = 1000.0 / target_fps;
+export const target_fps = 120;
+export const delay = 1000.0 / target_fps;
 
-let mouse_strength = .6;
+export let mouse_strength = .6;
 let mouse_influence_r = 250.0;
-let mouse_r2 = mouse_influence_r * mouse_influence_r;
+export let mouse_r2 = mouse_influence_r * mouse_influence_r;
 
-let lmb = false;
-let rmb = false;
+export let lmb = false;
+export let rmb = false;
 
-let mouse_x = -1e5;
-let mouse_y = -1e5;
+export let mouse_x = -1e5;
+export let mouse_y = -1e5;
 
-let render_colors = false;
-let show_ui = false;
-let show_fps = false;
+export let render_colors = false;
+export let show_ui = false;
+export let show_fps = false;
 
 const slider_spacing = 50;
 const top_spacing = 10;
@@ -158,48 +158,55 @@ particle_count_slider.oninput = function() {
 
 influence_radius_slider.oninput = function() {
     const value = influence_radius_slider.value * 0.001;
-    num_particles = value;
+    influence_radius = value;
+    h_sq = influence_radius * influence_radius;
+    inv_h = 1.0 / influence_radius;
+    repulsion_radius = influence_radius * 0.5;
+    inv_rep_r = 1.0 / repulsion_radius;
+    cell_size = influence_radius;
+    inv_cs = inv_h;
     influence_radius_label.innerHTML = toFixed(value, 3);
 }
 
 gravity_slider.oninput = function() {
     const value = gravity_slider.value * 0.001;
-    num_particles = value;
+    gravity = value;
     gravity_label.innerHTML = toFixed(value, 3);
 }
 
 target_density_slider.oninput = function() {
     const value = target_density_slider.value * 0.001;
-    num_particles = value;
+    target_density = value;
     target_density_label.innerHTML = toFixed(value, 3);
 }
 
 pressure_multiplier_slider.oninput = function() {
     const value = pressure_multiplier_slider.value * 0.001;
-    num_particles = value;
+    pressure_multiplier = value;
     pressure_multiplier_label.innerHTML = toFixed(value, 3);
 }
 
 viscosity_multiplier_slider.oninput = function() {
     const value = viscosity_multiplier_slider.value * 0.001;
-    num_particles = value;
+    viscosity_multipler = value;
     viscosity_multiplier_slider.innerHTML = toFixed(value, 3);
 }
 
 surface_tension_slider.oninput = function() {
     const value = surface_tension_slider.value * 0.001;
-    num_particles = value;
+    surface_tension_mp = value;
     surface_tension_label.innerHTML = toFixed(value, 3);
 }
 
 mouse_range_slider.oninput = function() {
     const value = mouse_range_slider.value * 0.001;
-    num_particles = value;
+    mouse_influence_r = value;
+    mouse_r2 = mouse_influence_r * mouse_influence_r;
     mouse_range_label.innerHTML = toFixed(value, 3);
 }
 
 mouse_strength_slider.oninput = function() {
     const value = mouse_strength_slider.value * 0.001;
-    num_particles = value;
+    mouse_strength = value;
     mouse_strength_label.innerHTML = toFixed(value, 3);
 }

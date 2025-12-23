@@ -1,3 +1,31 @@
+import {
+    num_particles,
+    max_particles,
+    influence_radius,
+    target_density,
+    pressure_multiplier,
+    viscosity_multipler,
+    surface_tension_mp,
+    gravity,
+    h_sq,
+    repulsion_radius,
+    inv_rep_r,
+    inv_h,
+    cell_size,
+    inv_cs,
+    target_fps,
+    delay,
+    mouse_strength,
+    mouse_r2,
+    lmb,
+    rmb,
+    mouse_x,
+    mouse_y,
+    render_colors,
+    show_ui,
+    show_fps
+} from './WaterSimSetup.js';
+
 let active = true;
 
 const grid = new Map();
