@@ -25,7 +25,9 @@ import {
     show_ui,
     show_fps,
 
-    canvas
+    canvas,
+    canvas_x,
+    canvas_y
 } from './WaterSimSetup.js';
 
 let active = true;
@@ -78,9 +80,6 @@ for (let i = 0; i < max_particles; i++) {
         neighbor_info[i][j] = new Float32Array(6);
     }
 }
-
-const canvas_x = canvas.width * 0.5;
-const canvas_y = canvas.height * 0.5;
 
 const grid_hash = canvas.width + 1;
 

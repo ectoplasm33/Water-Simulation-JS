@@ -41,6 +41,9 @@ canvas.y = 0;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+export const canvas_x = canvas.width * 0.5;
+export const canvas_y = canvas.height * 0.5;
+
 const slider_spacing = 50;
 const label_dy = -15;
 const slider_dx = 10;
