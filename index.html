@@ -11,21 +11,131 @@
                 overflow: hidden;
             }
 
-            canvas {
-                display: block;
+            .ui {
+                position: relative;
             }
 
-            #ui {
-                position: fixed;
+            canvas {
+                position: absolute;
                 top: 0px;
                 left: 0px;
+                display: block; 
+                z-index: 0;
+            }
+
+            #particle_count_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #particle_count_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #influence_radius_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #influence_radius_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #gravity_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #gravity_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #target_density_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #target_density_label {
+                position: absolute;
+                z-index: 1;
+            }
+            
+            #pressure_multiplier_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #pressure_multiplier_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #viscosity_multiplier_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #viscosity_multiplier_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #surface_tension_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #surface_tension_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #mouse_range_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #mouse_range_label {
+                position: absolute;
+                z-index: 1;
+            }
+
+            #mouse_strength_slider {
+                position: absolute;
+                left: 10px;
+                z-index: 1;
+                width: 200px;
+            }
+
+            #mouse_strength_label {
+                position: absolute;
+                z-index: 1;
             }
         </style>
     </head>
 
     <body>
         <div id="ui">
-            <canvas></canvas>
+            <canvas width="1200" height="800"></canvas>
 
             <input type="range" class="slider" id="particle_count_slider">
             <span id="particle_count_label"></span>
