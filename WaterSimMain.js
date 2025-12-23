@@ -35,7 +35,7 @@ let active = true;
 const grid = new Map();
 
 const num_vars = 7;
-const render_vars = 3
+const render_vars = 4;
 
 const particle_data = new Float32Array(max_particles * num_vars);
 const new_particles = new Float32Array(max_particles * num_vars);
@@ -51,7 +51,12 @@ const calculated_values = new Array(max_particles);
 
 const particle_keys = new Int32Array(max_particles);
 
-const particle_radius = 3.0 / canvas.width;
+const grid_hash = canvas.width + 1;
+
+const ratio = canvas.width / canvas.height;
+
+const particle_rx = 3.0 / canvas.width;
+const particle_ry = ratio * 3.0 / canvas.height;
 
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
@@ -67,7 +72,9 @@ for (let i = 0; i < num_particles; i++) {
         new_particles[j+k] = 0;
     }
 
-    normalized_particles[i*render_vars+2] = particle_radius;
+    j = i*render_vars;
+    normalized_particles[j+2] = particle_rx;
+    normalized_particles[j+3] = particle_ry;
 }
 
 for (let i = 0; i < max_particles; i++) {
@@ -80,10 +87,6 @@ for (let i = 0; i < max_particles; i++) {
         neighbor_info[i][j] = new Float32Array(6);
     }
 }
-
-const grid_hash = canvas.width + 1;
-
-const ratio = canvas.width / canvas.height;
 
 const quad_vertices = new Float32Array([
   -1, -ratio,
@@ -126,8 +129,6 @@ const instance_buffer = device.createBuffer({
     usage: GPUBufferUsage.VERTEX | GPUBufferUsage.COPY_DST,
 });
 
-const uniform_data = new Float32Array([canvas.width, canvas.height]);
-
 const vertex_shader_code = `
 struct vertexOutput {
     @builtin(position) position : vec4<f32>,
@@ -139,12 +140,12 @@ struct vertexOutput {
 fn vs_main(
     @location(0) quadPos : vec2<f32>,
     @location(1) center : vec2<f32>,
-    @location(2) radius : f32
+    @location(2) r : vec2<f32>
 ) -> vertexOutput {
     var out : vertexOutput;
 
     out.position = vec4<f32>(
-        center + quadPos * radius,
+        center + quadPos * r.x,
         0.0,
         1.0
     );
@@ -163,8 +164,10 @@ fn fs_main(
     @location(0) localPos : vec2<f32>,
     @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
+    var norm : vec2<f32>;
+    norm = localPos / radius;
 
-    if (distance(localPos, position.xy) > radius) {
+    if (length(norm) > radius.x) {
         discard;
     }
 
@@ -196,7 +199,7 @@ const pipeline = device.createRenderPipeline({
                 stepMode: 'instance',
                 attributes: [
                     { shaderLocation: 1, offset: 0, format: 'float32x2' }, // x,y
-                    { shaderLocation: 2, offset: 2 * 4, format: 'float32' } // radius
+                    { shaderLocation: 2, offset: 2 * 4, format: 'float32x2' } // rx, ry
                 ]
             }
         ]

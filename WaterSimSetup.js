@@ -179,44 +179,44 @@ influence_radius_slider.oninput = function() {
 gravity_slider.oninput = function() {
     const value = Number(gravity_slider.value) * 0.001;
     gravity = value;
-    gravity_label.innerHTML = String(toFixed(value, 3));
+    gravity_label.innerHTML = String(value.toFixed(3));
 }
 
 target_density_slider.oninput = function() {
     const value = Number(target_density_slider.value) * 0.001;
     target_density = value;
-    target_density_label.innerHTML = String(toFixed(value, 3));
+    target_density_label.innerHTML = String(value.toFixed(3));
 }
 
 pressure_multiplier_slider.oninput = function() {
     const value = Number(pressure_multiplier_slider.value) * 0.001;
     pressure_multiplier = value;
-    pressure_multiplier_label.innerHTML = String(toFixed(value, 3));
+    pressure_multiplier_label.innerHTML =String(value.toFixed(3));
 }
 
 viscosity_multiplier_slider.oninput = function() {
     const value = Number(viscosity_multiplier_slider.value) * 0.001;
     viscosity_multipler = value;
-    viscosity_multiplier_slider.innerHTML = String(toFixed(value, 3));
+    viscosity_multiplier_slider.innerHTML = String(value.toFixed(3));
 }
 
 surface_tension_slider.oninput = function() {
     const value = Number(surface_tension_slider.value) * 0.001;
     surface_tension_mp = value;
-    surface_tension_label.innerHTML = String(toFixed(value, 3));
+    surface_tension_label.innerHTML = String(value.toFixed(3));
 }
 
 mouse_range_slider.oninput = function() {
     const value = Number(mouse_range_slider.value) * 0.001;
     mouse_influence_r = value;
     mouse_r2 = mouse_influence_r * mouse_influence_r;
-    mouse_range_label.innerHTML = String(toFixed(value, 3));
+    mouse_range_label.innerHTML = String(value.toFixed(3));
 }
 
 mouse_strength_slider.oninput = function() {
     const value = Number(mouse_strength_slider.value) * 0.001;
     mouse_strength = value;
-    mouse_strength_label.innerHTML = String(toFixed(value, 3));
+    mouse_strength_label.innerHTML = String(value.toFixed(3));
 }
 
 canvas.addEventListener("mousemove", e => {
