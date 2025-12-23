@@ -137,15 +137,14 @@ const fragment_shader_code = `
 @fragment
 fn fs_main(
     @builtin(position) position : vec4<f32>,
-    @location(0) center : vec2<f32>,
+    @location(0) localPos : vec2<f32>,
     @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
 
-    // let dist = distance(position.xy, center);
 
-    // if (dist > 0.5) {
-    //     discard;
-    // }
+    if (localPos > radius) {
+        discard;
+    }
 
     return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
 }
