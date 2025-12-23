@@ -1,36 +1,3 @@
-let num_particles = 3800;
-let max_particles = 12000;
-let influence_radius = 48.0;
-let target_density  = 6.5;
-let pressure_multiplier = 0.16;
-let viscosity_multipler = 0.13;
-let surface_tension_mp = 1.0;
-let gravity = -0.25;
-
-let h_sq = influence_radius * influence_radius;
-let repulsion_radius = 0.5 * influence_radius;
-let inv_rep_r = 1.0 / repulsion_radius;
-let inv_h = 1.0 / influence_radius;
-let cell_size = influence_radius;
-let inv_cs = 1.0 / cell_size;
-
-const target_fps = 120;
-const delay = 1000.0 / target_fps;
-
-let mouse_strength = .6;
-let mouse_influence_r = 250.0;
-let mouse_r2 = mouse_influence_r * mouse_influence_r;
-
-let lmb = false;
-let rmb = false;
-
-let mouse_x = -1e5;
-let mouse_y = -1e5;
-
-let render_colors = false;
-let show_ui = false;
-let show_fps = false;
-
 let active = true;
 
 const grid = new Map();
