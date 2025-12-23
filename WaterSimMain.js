@@ -220,26 +220,6 @@ const pipeline = device.createRenderPipeline({
 const inv_cw = 2.0 / canvas.width;
 const inv_ch = 2.0 / canvas.height;
 
-canvas.addEventListener("mousemove", e => {
-    const rect = canvas.getBoundingClientRect();
-    mouse_x = e.clientX - rect.left - canvas_x;
-    mouse_y = rect.top - e.clientY + canvas_y;
-});
-
-canvas.addEventListener("mousedown", e => {
-    if (e.button == 0) lmb = true;
-    if (e.button == 2) rmb = true;
-});
-
-canvas.addEventListener("mouseup", e => {
-    if (e.button == 0) lmb = false;
-    if (e.button == 2) rmb = false;
-});
-
-canvas.addEventListener('contextmenu', function(event) {
-    event.preventDefault(); 
-});
-
 async function main_loop() {
 
     grid.clear();

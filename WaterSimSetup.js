@@ -36,7 +36,7 @@ export let show_ui = false;
 export let show_fps = false;
 
 const slider_spacing = 50;
-const label_dy = 5;
+const label_dy = -15;
 const slider_dx = 10;
 const slider_dy = 10;
 const slider_width = 200;
@@ -209,3 +209,23 @@ mouse_strength_slider.oninput = function() {
     mouse_strength = value;
     mouse_strength_label.innerHTML = String(toFixed(value, 3));
 }
+
+canvas.addEventListener("mousemove", e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse_x = e.clientX - rect.left - canvas_x;
+    mouse_y = rect.top - e.clientY + canvas_y;
+});
+
+canvas.addEventListener("mousedown", e => {
+    if (e.button == 0) lmb = true;
+    if (e.button == 2) rmb = true;
+});
+
+canvas.addEventListener("mouseup", e => {
+    if (e.button == 0) lmb = false;
+    if (e.button == 2) rmb = false;
+});
+
+canvas.addEventListener('contextmenu', function(event) {
+    event.preventDefault(); 
+});
