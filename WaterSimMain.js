@@ -137,12 +137,12 @@ struct vertexOutput {
 fn vs_main(
     @location(0) quadPos : vec2<f32>,
     @location(1) center : vec2<f32>,
-    @location(2) r : vec2
+    @location(2) r : f32
 ) -> vertexOutput {
     var out : vertexOutput;
 
     out.position = vec4<f32>(
-        center + quadPos * r.x,
+        center + quadPos * r,
         0.0,
         1.0
     );
