@@ -140,7 +140,7 @@ pressure_multiplier_label.left = pressure_multiplier_slider.left + pressure_mult
 pressure_multiplier_label.bottom = pressure_multiplier_slider.bottom + label_dy;
 
 const viscosity_multiplier_slider = document.getElementById('viscosity_multiplier_slider');
-const viscosity_multipler_label = document.getElementById('viscosity_multipler_label');
+const viscosity_multipler_label = document.getElementById('viscosity_multiplier_label');
 viscosity_multiplier_slider.min = 0;
 viscosity_multiplier_slider.max = 1 * 1000;
 viscosity_multiplier_slider.value = viscosity_multipler * 1000;
