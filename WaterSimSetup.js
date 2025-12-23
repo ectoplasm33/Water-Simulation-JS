@@ -44,8 +44,8 @@ canvas.height = window.innerHeight;
 export const canvas_x = canvas.width * 0.5;
 export const canvas_y = canvas.height * 0.5;
 
-const slider_spacing = 50;
-const label_dy = -15;
+const slider_spacing = 60;
+const label_dy = 12;
 const slider_dx = 10;
 const slider_dy = 10;
 const slider_width = 200;
@@ -58,7 +58,7 @@ particle_count_slider.value = num_particles;
 particle_count_slider.style.width = pixels(slider_width);
 particle_count_slider.style.left = pixels(slider_dx);
 particle_count_slider.style.top = pixels(slider_dy);
-particle_count_label.style.left = pixels(slider_dx + slider_width * 0.5);
+particle_count_label.style.left = pixels(slider_dx);
 particle_count_label.style.top = pixels(slider_dy + label_dy);
 particle_count_label.innerHTML = particle_count_slider.value;
 
@@ -70,7 +70,7 @@ influence_radius_slider.value = influence_radius * 1000;
 influence_radius_slider.style.width = pixels(slider_width);
 influence_radius_slider.style.left = pixels(slider_dx);
 influence_radius_slider.style.top = pixels(slider_spacing + slider_dy);
-influence_radius_label.style.left = pixels(slider_dx + slider_width * 0.5);
+influence_radius_label.style.left = pixels(slider_dx);
 influence_radius_label.style.top = pixels(slider_spacing + slider_dy + label_dy);
 influence_radius_label.innerHTML = String((Number(influence_radius_slider.value) * 0.001).toFixed(3));
 
@@ -82,7 +82,7 @@ gravity_slider.value = -gravity * 1000;
 gravity_slider.style.width = pixels(slider_width);
 gravity_slider.style.left = pixels(slider_dx);
 gravity_slider.style.top = pixels(slider_spacing * 2 + slider_dy);
-gravity_label.style.left = pixels(slider_dx + slider_width * 0.5);
+gravity_label.style.left = pixels(slider_dx);
 gravity_label.style.top = pixels(slider_spacing * 2 + slider_dy + label_dy);
 gravity_label.innerHTML = String((Number(gravity_slider.value) * 0.001).toFixed(3));
 
@@ -94,7 +94,7 @@ target_density_slider.value = target_density * 1000;
 target_density_slider.style.width = pixels(slider_width);
 target_density_slider.style.left = pixels(slider_dx);
 target_density_slider.style.top = pixels(slider_spacing * 3 + slider_dy);
-target_density_label.style.left = pixels(slider_dx + slider_width * 0.5);
+target_density_label.style.left = pixels(slider_dx);
 target_density_label.style.top = pixels(slider_spacing * 3 + slider_dy + label_dy);
 target_density_label.innerHTML = String((Number(target_density_slider.value) * 0.001).toFixed(3));
 
@@ -106,7 +106,7 @@ pressure_multiplier_slider.value = pressure_multiplier * 1000;
 pressure_multiplier_slider.style.width = pixels(slider_width);
 pressure_multiplier_slider.style.left = pixels(slider_dx);
 pressure_multiplier_slider.style.top = pixels(slider_spacing * 4 + slider_dy);
-pressure_multiplier_label.style.left = pixels(slider_dx + slider_width * 0.5);
+pressure_multiplier_label.style.left = pixels(slider_dx);
 pressure_multiplier_label.style.top = pixels(slider_spacing * 4 + slider_dy + label_dy);
 pressure_multiplier_label.innerHTML = String((Number(pressure_multiplier_slider.value) * 0.001).toFixed(3));
 
@@ -118,7 +118,7 @@ viscosity_multiplier_slider.value = viscosity_multipler * 1000;
 viscosity_multiplier_slider.style.width = pixels(slider_width);
 viscosity_multiplier_slider.style.left = pixels(slider_dx);
 viscosity_multiplier_slider.style.top = pixels(slider_spacing * 5 + slider_dy);
-viscosity_multipler_label.style.left = pixels(slider_dx + slider_width * 0.5);
+viscosity_multipler_label.style.left = pixels(slider_dx);
 viscosity_multipler_label.style.top = pixels(slider_spacing * 5 + slider_dy + label_dy);
 viscosity_multipler_label.innerHTML = String((Number(viscosity_multiplier_slider.value) * 0.001).toFixed(3));
 
@@ -130,7 +130,7 @@ surface_tension_slider.value = surface_tension_mp * 1000;
 surface_tension_slider.style.width = pixels(slider_width);
 surface_tension_slider.style.left = pixels(slider_dx);
 surface_tension_slider.style.top = pixels(slider_spacing * 6 + slider_dy);
-surface_tension_label.style.left = pixels(slider_dx + slider_width * 0.5);
+surface_tension_label.style.left = pixels(slider_dx);
 surface_tension_label.style.top = pixels(slider_spacing * 6 + slider_dy + label_dy);
 surface_tension_label.innerHTML = String((Number(surface_tension_slider.value) * 0.001).toFixed(3));
 
@@ -142,7 +142,7 @@ mouse_range_slider.value = mouse_influence_r * 1000;
 mouse_range_slider.style.width = pixels(slider_width);
 mouse_range_slider.style.left = pixels(slider_dx);
 mouse_range_slider.style.top = pixels(slider_spacing * 7 + slider_dy);
-mouse_range_label.style.left = pixels(slider_dx + slider_width * 0.5);
+mouse_range_label.style.left = pixels(slider_dx);
 mouse_range_label.style.top = pixels(slider_spacing * 7 + slider_dy + label_dy);
 mouse_range_label.innerHTML = String((Number(mouse_range_slider.value) * 0.001).toFixed(3));
 
@@ -154,7 +154,7 @@ mouse_strength_slider.value = mouse_strength * 1000;
 mouse_strength_slider.style.width = pixels(slider_width);
 mouse_strength_slider.style.left = pixels(slider_dx);
 mouse_strength_slider.style.top = pixels(slider_spacing * 8 + slider_dy);
-mouse_strength_label.style.left = pixels(slider_dx + slider_width * 0.5);
+mouse_strength_label.style.left = pixels(slider_dx);
 mouse_strength_label.style.top = pixels(slider_spacing * 8 + slider_dy + label_dy);
 mouse_strength_label.innerHTML = String((Number(mouse_strength_slider.value) * 0.001).toFixed(3));
 

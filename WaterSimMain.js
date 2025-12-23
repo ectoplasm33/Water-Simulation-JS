@@ -35,7 +35,7 @@ let active = true;
 const grid = new Map();
 
 const num_vars = 7;
-const render_vars = 4;
+const render_vars = 3;
 
 const particle_data = new Float32Array(max_particles * num_vars);
 const new_particles = new Float32Array(max_particles * num_vars);
@@ -55,8 +55,7 @@ const grid_hash = canvas.width + 1;
 
 const ratio = canvas.width / canvas.height;
 
-const particle_rx = 3.0 / canvas.width;
-const particle_ry = ratio * 3.0 / canvas.height;
+const particle_r = 3.0 / canvas.width;
 
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
@@ -73,8 +72,7 @@ for (let i = 0; i < num_particles; i++) {
     }
 
     j = i*render_vars;
-    normalized_particles[j+2] = particle_rx;
-    normalized_particles[j+3] = particle_ry;
+    normalized_particles[j+2] = particle_r;
 }
 
 for (let i = 0; i < max_particles; i++) {
@@ -133,14 +131,13 @@ const vertex_shader_code = `
 struct vertexOutput {
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>,
-    @location(1) r : vec2<f32>
 };
 
 @vertex
 fn vs_main(
     @location(0) quadPos : vec2<f32>,
     @location(1) center : vec2<f32>,
-    @location(2) r : vec2<f32>
+    @location(2) r : vec2
 ) -> vertexOutput {
     var out : vertexOutput;
 
@@ -151,7 +148,6 @@ fn vs_main(
     );
 
     out.localPos = quadPos;
-    out.r = r;
 
     return out;
 }
@@ -162,12 +158,8 @@ const fragment_shader_code = `
 fn fs_main(
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>,
-    @location(1) r : vec2<f32>
 ) -> @location(0) vec4<f32> {
-    var norm : vec2<f32>;
-    norm = localPos / r;
-
-    if (length(norm) > r.x) {
+    if (length(localPos) > 1.0) {
         discard;
     }
 
@@ -199,7 +191,7 @@ const pipeline = device.createRenderPipeline({
                 stepMode: 'instance',
                 attributes: [
                     { shaderLocation: 1, offset: 0, format: 'float32x2' }, // x,y
-                    { shaderLocation: 2, offset: 2 * 4, format: 'float32x2' } // rx, ry
+                    { shaderLocation: 2, offset: 2 * 4, format: 'float32' } // rx, ry
                 ]
             }
         ]
