@@ -23,7 +23,9 @@ import {
     mouse_y,
     render_colors,
     show_ui,
-    show_fps
+    show_fps,
+
+    canvas
 } from './WaterSimSetup.js';
 
 let active = true;
@@ -46,12 +48,6 @@ const neighbor_info = new Array(max_particles);
 const calculated_values = new Array(max_particles);
 
 const particle_keys = new Int32Array(max_particles);
-
-const canvas = document.querySelector('canvas');
-canvas.x = 0;
-canvas.y = 0;
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
 
 const particle_radius = 3.0 / canvas.width;
 

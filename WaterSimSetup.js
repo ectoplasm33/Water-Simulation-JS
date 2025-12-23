@@ -35,6 +35,12 @@ export let render_colors = false;
 export let show_ui = false;
 export let show_fps = false;
 
+export const canvas = document.querySelector('canvas');
+canvas.x = 0;
+canvas.y = 0;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
 const slider_spacing = 50;
 const label_dy = -15;
 const slider_dx = 10;
