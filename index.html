@@ -12,14 +12,20 @@
             }
 
             canvas {
-                display: block; /* removes inline whitespace */
+                display: block;
+            }
+
+            #ui {
+                position: fixed;
+                top: 0px;
+                left: 0px;
             }
         </style>
     </head>
 
     <body>
-        <div>
-            <canvas width="1200" height="800"></canvas>
+        <div id="ui">
+            <canvas></canvas>
 
             <input type="range" class="slider" id="particle_count_slider">
             <span id="particle_count_label"></span>

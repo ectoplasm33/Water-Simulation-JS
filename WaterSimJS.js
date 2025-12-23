@@ -92,11 +92,14 @@ for (let i = 0; i < max_particles; i++) {
 const slider_spacing = 50;
 
 const particle_count_slider = document.getElementById('particle_count_slider');
+const particle_count_label = document.getElementById('particle_count_label');
 particle_count_slider.min = 500;
 particle_count_slider.max = max_particles;
 particle_count_slider.value = num_particles;
 particle_count_slider.x = 10;
 particle_count_slider.y = 10;
+particle_count_label.x = particle_count_slider.x + particle_count_slider.width * 0.5;
+particle_count_label.y = particle_count_slider.y + 5
 
 const influence_radius_slider = document.getElementById('influence_radius_slider');
 influence_radius_slider.min = 10 * 1000;
