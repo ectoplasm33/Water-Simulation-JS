@@ -169,8 +169,7 @@ fn fs_main(
     @location(1) radius : f32
 ) -> @location(0) vec4<f32> {
 
-
-    if (length(localPos) > radius) {
+    if (distance(localPos, position.xy) > radius) {
         discard;
     }
 
