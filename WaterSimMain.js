@@ -207,6 +207,11 @@ const pipeline = device.createRenderPipeline({
                     srcFactor: 'one',       // Use source color * 1.0 (premultiplied source alpha is assumed)
                     dstFactor: 'one-minus-src-alpha', // Use destination color * (1.0 - source alpha)
                     operation: 'add'     // Add the results together
+                },
+                alpha: {
+                    srcFactor: 'zero',       // Use source alpha * 1.0
+                    dstFactor: 'one-minus-src-alpha', // Use destination alpha * (1.0 - source alpha)
+                    operation: 'add'       // Add the results together
                 }
             }
         }]
