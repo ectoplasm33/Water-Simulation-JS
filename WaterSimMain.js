@@ -165,7 +165,7 @@ fn fs_main(
     }
 
     var scalar : f32;
-    scalar = (1.0 - len)
+    scalar = (1.0 - len);
 
     return vec4<f32>(0, 0.156862745098 * scalar, 0.941176470588 * scalar, 0.7);
 }
