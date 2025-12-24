@@ -53,7 +53,7 @@ const grid_hash = canvas.width + 1;
 
 const ratio = canvas.width / canvas.height;
 
-const particle_r = 5.0 / canvas.width;
+const particle_r = 15.0 / canvas.width;
 
 for (let i = 0; i < max_particles; i++) {
     let j = i*num_vars;
@@ -200,7 +200,21 @@ const pipeline = device.createRenderPipeline({
     fragment: {
         module: fragment_module,
         entryPoint: 'fs_main',
-        targets: [{ format: canvas_format }]
+        targets: [{
+            format: canvas_format,
+            blend: {
+                color: {
+                    srcFactor: 'one',       // Use source color * 1.0 (premultiplied source alpha is assumed)
+                    dstFactor: 'one-minus-src-alpha', // Use destination color * (1.0 - source alpha)
+                    operation: 'add'     // Add the results together
+                },
+                alpha: {
+                    srcFactor: 'one',       // Use source alpha * 1.0
+                    dstFactor: 'one-minus-src-alpha', // Use destination alpha * (1.0 - source alpha)
+                    operation: 'add'       // Add the results together
+                }
+            }
+        }]
     },
     primitive: {
         topology: 'triangle-strip'
