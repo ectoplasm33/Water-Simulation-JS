@@ -55,7 +55,7 @@ const ratio = canvas.width / canvas.height;
 
 const particle_r = 5.0 / canvas.width;
 
-for (let i = 0; i < num_particles; i++) {
+for (let i = 0; i < max_particles; i++) {
     let j = i*num_vars;
     particle_data[j] = (Math.random()-0.5) * canvas.width;
     particle_data[j+1] = (Math.random()-0.5) * canvas.height;
@@ -164,10 +164,7 @@ fn fs_main(
         discard;
     }
 
-    var scalar : f32;
-    scalar = (1.0 - len);
-
-    return vec4<f32>(0, 0.156862745098 * scalar, 0.941176470588 * scalar, 0.7);
+    return vec4<f32>(0.0, 0.156862745098, 0.941176470588, 0.7 * (1.0 - len));
 }
 `;
 

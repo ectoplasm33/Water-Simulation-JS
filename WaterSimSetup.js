@@ -84,7 +84,7 @@ gravity_slider.style.left = pixels(slider_dx);
 gravity_slider.style.top = pixels(slider_spacing * 2 + slider_dy);
 gravity_label.style.left = pixels(slider_dx);
 gravity_label.style.top = pixels(slider_spacing * 2 + slider_dy + label_dy);
-gravity_label.innerHTML = String((Number(gravity_slider.value) * 0.001).toFixed(3));
+gravity_label.innerHTML = String((Number(gravity_slider.value) * -0.001).toFixed(3));
 
 const target_density_slider = document.getElementById('target_density_slider');
 const target_density_label = document.getElementById('target_density_label');
