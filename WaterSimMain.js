@@ -155,7 +155,7 @@ const fragment_shader_code = `
 @fragment
 fn fs_main(
     @builtin(position) position : vec4<f32>,
-    @location(0) localPos : vec2<f32>,
+    @location(0) localPos : vec2<f32>
 ) -> @location(0) vec4<f32> {
     var len : f32;
     len = length(localPos);
@@ -207,11 +207,6 @@ const pipeline = device.createRenderPipeline({
                     srcFactor: 'one',       // Use source color * 1.0 (premultiplied source alpha is assumed)
                     dstFactor: 'one-minus-src-alpha', // Use destination color * (1.0 - source alpha)
                     operation: 'add'     // Add the results together
-                },
-                alpha: {
-                    srcFactor: 'one',       // Use source alpha * 1.0
-                    dstFactor: 'one-minus-src-alpha', // Use destination alpha * (1.0 - source alpha)
-                    operation: 'add'       // Add the results together
                 }
             }
         }]
