@@ -111,16 +111,16 @@ pressure_multiplier_label.style.top = pixels(slider_spacing * 4 + slider_dy + la
 pressure_multiplier_label.innerHTML = String((Number(pressure_multiplier_slider.value) * 0.001).toFixed(3));
 
 const viscosity_multiplier_slider = document.getElementById('viscosity_multiplier_slider');
-const viscosity_multipler_label = document.getElementById('viscosity_multiplier_label');
+const viscosity_multiplier_label = document.getElementById('viscosity_multiplier_label');
 viscosity_multiplier_slider.min = 0;
 viscosity_multiplier_slider.max = 1 * 1000;
 viscosity_multiplier_slider.value = viscosity_multipler * 1000;
 viscosity_multiplier_slider.style.width = pixels(slider_width);
 viscosity_multiplier_slider.style.left = pixels(slider_dx);
 viscosity_multiplier_slider.style.top = pixels(slider_spacing * 5 + slider_dy);
-viscosity_multipler_label.style.left = pixels(slider_dx);
-viscosity_multipler_label.style.top = pixels(slider_spacing * 5 + slider_dy + label_dy);
-viscosity_multipler_label.innerHTML = String((Number(viscosity_multiplier_slider.value) * 0.001).toFixed(3));
+viscosity_multiplier_label.style.left = pixels(slider_dx);
+viscosity_multiplier_label.style.top = pixels(slider_spacing * 5 + slider_dy + label_dy);
+viscosity_multiplier_label.innerHTML = String((Number(viscosity_multiplier_slider.value) * 0.001).toFixed(3));
 
 const surface_tension_slider = document.getElementById('surface_tension_slider');
 const surface_tension_label = document.getElementById('surface_tension_label');
@@ -173,13 +173,13 @@ influence_radius_slider.oninput = function() {
     inv_rep_r = 1.0 / repulsion_radius;
     cell_size = influence_radius;
     inv_cs = inv_h;
-    influence_radius_label.innerHTML = String(toFixed(value, 3));
+    influence_radius_label.innerHTML = String(value.toFixed(3));
 }
 
 gravity_slider.oninput = function() {
     const value = Number(gravity_slider.value) * 0.001;
-    gravity = value;
-    gravity_label.innerHTML = String(value.toFixed(3));
+    gravity = -value;
+    gravity_label.innerHTML = String(-value.toFixed(3));
 }
 
 target_density_slider.oninput = function() {
@@ -197,7 +197,7 @@ pressure_multiplier_slider.oninput = function() {
 viscosity_multiplier_slider.oninput = function() {
     const value = Number(viscosity_multiplier_slider.value) * 0.001;
     viscosity_multipler = value;
-    viscosity_multiplier_slider.innerHTML = String(value.toFixed(3));
+    viscosity_multiplier_label.innerHTML = String(value.toFixed(3));
 }
 
 surface_tension_slider.oninput = function() {

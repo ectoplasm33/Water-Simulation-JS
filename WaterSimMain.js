@@ -30,8 +30,6 @@ import {
     canvas_y
 } from './WaterSimSetup.js';
 
-let active = true;
-
 const grid = new Map();
 
 const num_vars = 7;
@@ -55,7 +53,7 @@ const grid_hash = canvas.width + 1;
 
 const ratio = canvas.width / canvas.height;
 
-const particle_r = 3.0 / canvas.width;
+const particle_r = 5.0 / canvas.width;
 
 for (let i = 0; i < num_particles; i++) {
     let j = i*num_vars;
@@ -159,11 +157,17 @@ fn fs_main(
     @builtin(position) position : vec4<f32>,
     @location(0) localPos : vec2<f32>,
 ) -> @location(0) vec4<f32> {
-    if (length(localPos) > 1.0) {
+    var len : f32;
+    len = length(localPos);
+    
+    if (len > 1.0) {
         discard;
     }
 
-    return vec4<f32>(0, 0.156862745098, 0.941176470588, 0.666666666667);
+    var scalar : f32;
+    scalar = (1.0 - len)
+
+    return vec4<f32>(0, 0.156862745098 * scalar, 0.941176470588 * scalar, 0.7);
 }
 `;
 
